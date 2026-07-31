@@ -48,7 +48,15 @@ The plumbing of computational research is now close to free, and a plain, unclev
 
 ## What is in the data
 
-The research notebook **downloads its own data** at runtime: monthly Google search interest for Mexico via `pytrends`, and dengue case counts from the [OpenDengue](https://opendengue.org/) national extract. Both are cached into `data/` so the notebook still runs without a network. `data/MX_Dengue_trends.csv` is the older curated SISMID file, kept because the notebook checks the live download against it and the two disagree in an instructive way.
+Part A **downloads its own data** at runtime, from three unrelated organisations, and every result is cached into `data/` so nothing else has to wait on a network:
+
+| File | Source | What it is |
+|---|---|---|
+| `gt_dengue_mx.csv` | Google Trends, via `pytrends` | Monthly search interest in Mexico for four Spanish dengue terms, 2004-2024 |
+| `opendengue_mexico_monthly.csv` | [OpenDengue](https://opendengue.org/) V1.3 national extract | Mexican dengue case counts, aggregated to months |
+| `who_flunet_mexico_weekly.csv` | [WHO FluNet](https://www.who.int/tools/flunet) via the WHO xmart API | Weekly influenza positives for Mexico, 1997-2026. This is the disease ARGO was actually built for, and part B's prompts transfer to it unchanged |
+
+`data/MX_Dengue_trends.csv` is the older curated SISMID file, kept because part A checks the live download against it and the two disagree in an instructive way.
 
 There is **no student data in this repository**. The roster example in notebook 02 is fabricated; it preserves the structure of the real problem and none of the people.
 
