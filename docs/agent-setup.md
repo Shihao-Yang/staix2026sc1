@@ -27,7 +27,7 @@ npm install -g @anthropic-ai/claude-code
 npm install -g @openai/codex
 ```
 
-Or install both at once:
+Or install both at once, which also skips Claude Code's first-run wizard for you:
 
 ```bash
 bash scripts/setup-agents.sh
@@ -38,6 +38,23 @@ Check they landed:
 ```bash
 claude --version && codex --version
 ```
+
+### Skip the first-run wizard
+
+If you installed by hand rather than through the script, run this once:
+
+```bash
+bash scripts/claude-skip-onboarding.sh
+```
+
+Left alone, the first `claude` in a fresh Codespace walks you through an onboarding wizard,
+and the login screen inside it will cheerfully sign you into **your own** account instead of
+using the credential you were given. In a room of thirty that costs ten minutes and leaves the
+class split across two different auth states, which is exactly what happened to me at SISMID.
+
+The script touches no credentials at all. It only marks onboarding complete and pre-accepts the
+folder-trust prompt for this repo, so it is worth running whichever way you authenticate. It is
+idempotent, and it keeps any settings you already have.
 
 ---
 
@@ -72,6 +89,11 @@ To keep it across new terminals and Codespace restarts:
 ```bash
 echo "export ANTHROPIC_API_KEY='sk-ant-...'" >> ~/.bashrc
 ```
+
+If `claude` greets you with the setup wizard rather than a prompt, you skipped the step above:
+run `bash scripts/claude-skip-onboarding.sh`, then start `claude` again. Do not click through
+the wizard's login screen, because it will sign you into your own account and quietly ignore
+the workspace key you just set.
 
 That is it. In principle every one of you already has this key and never needs the next
 section.

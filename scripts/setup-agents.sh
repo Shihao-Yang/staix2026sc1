@@ -17,6 +17,13 @@ echo
 echo "Installed:"
 claude --version 2>/dev/null || echo "  claude: not on PATH (restart your shell)"
 codex --version  2>/dev/null || echo "  codex:  not on PATH (restart your shell)"
+
+# Skip Claude Code's first-run wizard. No credentials involved, so this is worth doing
+# regardless of how you end up authenticating.
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+echo
+bash "$REPO_ROOT/scripts/claude-skip-onboarding.sh" "$REPO_ROOT" || true
+
 echo
 echo "Next: log in. See docs/agent-setup.md"
 echo "  Claude Code, with the workspace key from the course:  export ANTHROPIC_API_KEY=..."
