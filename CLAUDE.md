@@ -72,6 +72,7 @@ For small text fixes, edit the `.ipynb` directly rather than regenerating. Note 
 - `~/Workspace/sismid2026/` is the SISMID 2026 short course. `agentic-ai-teaching-lessons.md` (in Chinese) is the primary lessons-learned source; the appendix at the bottom of `00_start_here.md` is the English port aimed at this different audience.
 - `~/Workspace/sismid2026/course-repo/` is the SISMID course repo, source of the dengue data and the two-lane (prompt / worked-solution) notebook pattern.
 - `~/Workspace/agentic-ai-presentations/skills/` holds the sourced digests of Anthropic's Agent Skills docs, and `skills-reading-group.tex/.pdf` is the 16-frame deck generated from them. That is the real artifact behind the education file's first demo.
+- `AI Agent for Research.pptx` is a deck the author presented **elsewhere**, committed as the source for `03_loopplane_research_loop.md`: slide 2 is where that file's prompt and its install/plan/review/approve/run sequence come from, and slides 4 to 9 are the proposal-as-blueprint, two-checks and steam-engine arguments. **It is not a deck for this talk and does not reverse the no-slides decision.** If the prompt on slide 2 changes, change it in `03` too.
 - **Canvas is deliberately gone.** The education segment used to lead with the Canvas REST API and the hand-written 2024 scripts in `~/Workspace/canvas/`. It was dropped: slide generation and mailing-list work demo better in the time available. Do not reintroduce it.
 
 ## Writing conventions

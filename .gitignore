@@ -17,6 +17,9 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 
+# PowerPoint and Word leave these behind while a file is open.
+~$*
+
 # Never commit credentials in plaintext.
 # Only the encrypted .enc blobs may be committed; everything else in secrets/ is blocked.
 .env
