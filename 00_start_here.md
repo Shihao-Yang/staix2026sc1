@@ -64,32 +64,23 @@ claude --dangerously-skip-permissions
 ```
 
 * Fine here because a Codespace is disposable. **Not a habit for your own machine.**
-
-> ### Time for the live demo
+  * Demo for terminal agent vs copilot
 
 ---
 
 ## Your first task should be boring
 
-* Do **not** open with something impressive. Open with something you already know how to do and resent doing.
-* Then you can verify the result instantly, and you are betting nothing.
-* Trying to be impressed on day one is how people conclude it does not work.
-
-**Fetching data is the demo that converts people.** Everyone dreads it, nobody feels expert at it, the agent is genuinely good at it, and one plot tells you whether it worked.
+**Fetching data.** Everyone dreads it, nobody feels expert at it, the agent is genuinely good at it, and one plot tells you whether it worked.
 
 ```
 Download Google search interest for "dengue", "sintomas de dengue" and "mosquito"
-in Mexico over the past five years. Save it as a tidy CSV, plot all three, and tell
-me the date of the last data point.
+in Mexico over the past five years. Save it as a tidy CSV, plot all three.
 ```
 
 ```
 Download the last five years of weekly US influenza data from CDC, save it as a
 tidy CSV, and plot it.
 ```
-
-* **Your check, not the agent's:** does the last point land on the current week? Do the peaks fall in a plausible season?
-* Ask for **the number that would expose the failure**, not just the result. That habit is what the rest of this talk is about.
 
 ---
 
@@ -100,14 +91,29 @@ tidy CSV, and plot it.
 * Capable. Fast. Will absolutely make mistakes, and will not always tell you.
 * **You have the data intuition. That is the part that did not get automated.**
 * So ask constantly for **visualization**: raw data, cleaned data, results.
-* Ask for the **intermediate outputs you already know how to read**: MCMC trace plots, cross-validation curves, residuals, coefficient paths. You know what wrong looks like.
+* Ask for the **intermediate outputs you already know how to read**: MCMC trace plots, cross-validation curves, residuals, diagnostic charts. You know what wrong looks like.
 
 ### 2. Write your environment's facts where the agent will read them
 
 * Claude Code loads a plain markdown file at your project root, `CLAUDE.md`, into every session. Just prose, no format to learn.
 * Put in it what nobody can derive: *this API rate-limits at ten calls a minute*, *this column is zero when it means missing*, *our cluster needs that module loaded first*.
 * Add to it every time you debug something surprising. **Highest-return habit here.**
-* **Skills** are the next step up: a reusable folder of instructions plus scripts, loaded only when relevant. Mine for driving my email is a page of prose plus a file of accumulated gotchas. It turned a fragile negotiation into one line.
+
+> ### Demo: open `CLAUDE.md` in this repo
+> Do not read it. Point at three lines that are three different **kinds** of thing no agent could infer:
+> * **"Results are real and reported honestly... the 2.5% must not be inflated."** A scientific constraint. I told it once not to let me oversell my own paper, and it has held me to it across a dozen sessions.
+> * **"No student data. The roster in notebook 02 is fabricated."** An ethical one.
+> * **"Soft-wrap, do not hard-wrap."** A pure personal preference, and it stopped re-wrapping my files.
+
+* **Skills** are the next step up: a reusable folder of instructions plus scripts, loaded only when relevant. Mine for driving my email is a page of prose plus a file of accumulated gotchas.
+
+> ### Demo: the gotchas file from my email skill
+> Two lines, each one an afternoon I am never spending again:
+> * *SSH timeout is not a broker failure. The box is asleep; Tailscale reports it active from a cached heartbeat, which is misleading.*
+> * *ASCII subjects only. Em-dashes get mangled in the SSH to Windows to COM pipeline.*
+>
+> Nothing derives those. They were each discovered exactly once, in confusion, and written down.
+
 * The point of both: **stop re-explaining your setup in every conversation.**
 
 ### 3. Ask for the plan before the action, on anything that writes
@@ -122,21 +128,22 @@ tidy CSV, and plot it.
 
 ---
 
+
+
 ## Use case 1 (research): rebuild my first paper, from prompts only
 
-**[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** (prompts, empty cells) &nbsp;·&nbsp; **[`_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** (worked, executed)
+> ### Switch to the notebook now
+> **[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** to drive it live &nbsp;·&nbsp; **[`_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** if the room needs the answer fast
 
-* Dengue in Mexico, 2004-2011. **Four prompts**, from raw CSV to a working ARGO model: dynamic training, LASSO term selection, leak-free out-of-sample comparison, three benchmarks.
+**Say while it runs:**
+
+* Dengue in Mexico, 2004-2011. **Four prompts**, raw CSV to a working ARGO model: dynamic training, LASSO term selection, leak-free out-of-sample comparison against three benchmarks.
 * **I wrote no Python.**
+* Then stop and ask what it decided **for** me. It quietly swapped `log` for `log1p`. Correct patch, never mentioned.
+* Why that matters: one search column is **exactly zero in 40% of months**. Google thresholds low volume away. **Missingness wearing the costume of a small number.**
+* **No prompt produces that sentence.** It comes from knowing the data source.
 
-### The part that matters
-
-* Somewhere in the middle I stop and ask what the agent decided **for** me.
-* It had quietly swapped `log` for `log1p`. Correct patch. Never mentioned.
-* Why it matters: one search column is **exactly zero in 40% of months**. That is Google thresholding low volume away. **Missingness wearing the costume of a small number.**
-* No prompt produces that sentence. It comes from knowing the data source.
-
-### The honest table
+**The numbers to quote:**
 
 | Model | RMSE | vs AR(3) |
 |---|---|---|
@@ -147,26 +154,23 @@ tidy CSV, and plot it.
 
 * **Dynamic training is the big win.** Just refitting beats the frozen fit by ~40%.
 * **Autoregression does most of the rest.** Dengue is seasonal and persistent.
-* **Search adds ~2.5%.** Real, modest, and I am going to say so out loud rather than oversell my own paper. The 2015 result was weekly US flu against millions of queries; this is monthly dengue with four terms and 96 observations.
-* Writing that paragraph honestly is still my job, and it decides whether the analysis is good.
-
-> ### Time for the live demo
+* **Search adds ~2.5%.** Real, modest, and I say so rather than oversell my own paper. The 2015 result was weekly US flu against millions of queries; this is monthly dengue, four terms, 96 observations.
+* **Writing that sentence honestly is still my job**, and it decides whether the analysis is any good.
 
 ---
 
 ## Use case 2 (education): the agent as *my* TA, not my students'
 
-**[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)**
+> ### Switch to the notebook now
+> **[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)**
 
-### What I have not figured out
+**Open with what I have not solved:**
 
-* **I do not have a good answer for how students should use AI in assessment.** I have policies in my syllabi and I am not confident in any of them.
+* **I have no good answer for how students should use AI in assessment.** I have policies in my syllabi and I am not confident in any of them.
 * I have gotten very good at using these tools for my own work while still not knowing what to tell a first-year who asks if they may use one on a homework.
-* That gap is uncomfortable and I think it is the more important problem.
+* That gap is uncomfortable, and I think it is the more important problem.
 
-### What I have figured out: the instructor's back office
-
-* Course sites, rosters, mailing lists, scheduling, recordings, transcripts, the steady stream of individual student requests. Most of the hours, none of the glory.
+**Then what I have solved: the instructor's back office.**
 
 | | Research modeling | Course administration |
 |---|---|---|
@@ -176,23 +180,10 @@ tidy CSV, and plot it.
 | Repetitive? | No | Relentlessly |
 
 * Everything in the right column says **delegate this**.
-
-### Three jobs it does for me
-
-* **Canvas is a REST API.** I hand-wrote a due-date shifter in 2024; it took an evening, mostly pasting assignment IDs. Now it is one prompt. The real change is not the evening saved, it is that **the class of tasks worth automating got much larger**.
-* **The mailing list nobody designed.** My reading group accreted to ~28 students across three email threads. I stopped maintaining a list and started **re-deriving** it from the mailbox.
-* **Recordings to summaries.** Recording, transcript, summary, draft to the list. Audit the transcript before trusting it: a summary of a hallucinated transcript looks exactly like a real one.
-
-### The line I enforce
-
-| No review needed | I review, then it acts | I do it myself |
-|---|---|---|
-| Search mail, build the roster | Send any email to students | Anything touching a grade |
-| Pull transcripts, draft summaries | Publish to the course site | Accommodation calls |
-| Read the gradebook, flag anomalies | Bulk due-date changes | Anything I would not sign |
-
-* **Reads are free, writes are reviewed, and anything a student experiences as coming from me has to actually have come from me.**
-* Student records are FERPA-protected. The roster in that notebook is fabricated.
+* **Canvas is a REST API.** I hand-wrote a due-date shifter in 2024; an evening, mostly pasting assignment IDs. Now one prompt. The real change is not the evening saved, it is that **the class of tasks worth automating got much larger**.
+* **The mailing list nobody designed.** ~28 students across three email threads. I stopped maintaining a list and started **re-deriving** it from the mailbox.
+* **Recordings to summaries.** Audit the transcript before trusting it: a summary of a hallucinated transcript looks exactly like a real one.
+* **Reads are free, writes are reviewed**, and anything a student experiences as coming from me has to actually have come from me. FERPA is real; that roster is fabricated.
 
 ---
 
@@ -200,7 +191,6 @@ tidy CSV, and plot it.
 
 * Rebuilding ARGO took **four prompts and about twenty minutes**. It took me most of a year in 2015.
 * Nearly all of that year was plumbing. **Plumbing is now close to free.**
-* What did **not** get cheaper:
 
 | Still expensive | Now nearly free |
 |---|---|
@@ -231,7 +221,7 @@ tidy CSV, and plot it.
 git clone https://github.com/Shihao-Yang/staix2026sc1.git
 ```
 
-Or open it in a Codespace from the green **Code** button. Every prompt lives in the notebook that uses it, so there is nothing else to look up. The long version of the lessons, written up from the SISMID course, is the appendix below.
+Or open it in a Codespace from the green **Code** button. Every prompt lives in the notebook that uses it. The long version of the lessons, from the SISMID course, is the appendix below.
 
 **Shihao Yang** &nbsp;·&nbsp; shihao.yang@isye.gatech.edu &nbsp;·&nbsp; ISyE, Georgia Tech
 
@@ -239,17 +229,11 @@ Or open it in a Codespace from the green **Code** button. Every prompt lives in 
 
 # Appendix: the long version of the lessons
 
-*Not needed to follow the talk. This is for anyone who wants to run something like this themselves.*
+*Not presented. For anyone who wants to run something like this themselves.*
 
 Written up after **SISMID 2026**, where I co-taught "Statistics and Modeling with Novel Data Streams" with Mauricio Santillana: two and a half days, roughly fifteen epidemiologists and biostatisticians, several of whom do not write code for a living, all of them using coding agents throughout.
 
 It is organized as environment, then teaching, then the open questions I have not solved. The habits in the talk above are the compressed version of what is here.
-
-One framing note before anything else, because it determines which of these lessons transfer.
-
-**My course used agents as a tool. SC01 teaches the tool itself.** In my course the agent was a means: I was teaching novel data streams and epidemic models, and the agent existed to flatten an enormous range of coding ability so that everyone could reach the actual material. When you are teaching the agent as the subject, some of my problems (the agent being distractingly flashy, for instance) are not problems at all, they are the point. Read accordingly.
-
----
 
 ## Part 1: environment and tooling
 
