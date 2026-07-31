@@ -19,22 +19,25 @@ which is why courses use it. Alone, your laptop is fine.
 
 ## 2. Install an agent (2 minutes)
 
-Two good options. They are close enough that nothing in this repo depends on which you pick,
-so use whichever you already have access to.
+Two good options, and nothing in this repo depends on which you pick.
 
-[Claude Code](https://claude.com/claude-code):
-
-```bash
-npm install -g @anthropic-ai/claude-code && claude
-```
-
-[Codex](https://developers.openai.com/codex/cli):
+**If you already have a ChatGPT account**, use [Codex](https://developers.openai.com/codex/cli).
+It signs in with the account you have, so there is nothing to provision:
 
 ```bash
 npm install -g @openai/codex && codex
 ```
 
-Either will walk you through signing in on first run.
+**Otherwise** use [Claude Code](https://claude.com/claude-code), which is also what everything
+in this repo was built with:
+
+```bash
+npm install -g @anthropic-ai/claude-code && claude
+```
+
+Either will walk you through signing in on first run. Full login instructions, including how to
+supply an API key and what to do when it does not work, are in
+[`docs/agent-setup.md`](agent-setup.md).
 
 What matters is the *category*, not the brand: you want the kind that runs in a terminal,
 executes code, reads its own errors, and fixes itself. **Not** the Copilot-style completion

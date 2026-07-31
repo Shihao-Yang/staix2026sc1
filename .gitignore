@@ -11,7 +11,10 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 
-# Never commit credentials
+# Never commit credentials in plaintext.
+# Only the encrypted .enc blobs may be committed; everything else in secrets/ is blocked.
 .env
 *.key
-secrets/
+secrets/*
+!secrets/*.enc
+!secrets/README.md
