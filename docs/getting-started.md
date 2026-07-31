@@ -113,4 +113,4 @@ separate skill and it is the subject of the rest of this repo.
 - [`notebooks/01_research_dengue.ipynb`](../notebooks/01_research_dengue.ipynb): that follow-up
   question catching a real silent decision, in a live analysis.
 - [`docs/lessons-learned.md`](lessons-learned.md): what worked and what did not, from teaching
-  this to thirty people who mostly do not code.
+  this to a room of epidemiologists, several of whom do not code.

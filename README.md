@@ -18,7 +18,7 @@ Supporting material:
 
 - **[`prompts/`](prompts/)**: every prompt from both notebooks as copy-pasteable text.
 - **[`docs/lessons-learned.md`](docs/lessons-learned.md)**: the long version, written up from
-  teaching a SISMID 2026 short course where ~30 epidemiologists used coding agents for two and
+  teaching a SISMID 2026 short course where ~15 epidemiologists used coding agents for two and
   a half days.
 - **[`docs/agent-setup.md`](docs/agent-setup.md)**: install and log in. Codex if you already
   have a ChatGPT account, Claude Code otherwise, plus the encrypted fallback token for when the

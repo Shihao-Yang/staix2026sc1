@@ -1,9 +1,9 @@
 # Lessons from teaching with coding agents
 
 Written up after **SISMID 2026**, where I co-taught "Statistics and Modeling with Novel Data
-Streams" with Mauricio Santillana: two and a half days, roughly thirty epidemiologists and
-biostatisticians, most of whom do not write code for a living, all of them using coding agents
-throughout.
+Streams" with Mauricio Santillana: two and a half days, roughly fifteen epidemiologists and
+biostatisticians, several of whom do not write code for a living, all of them using coding
+agents throughout.
 
 This is the long version of the five lessons in
 [`notebooks/00_start_here.ipynb`](../notebooks/00_start_here.ipynb). It is organized as

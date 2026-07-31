@@ -49,7 +49,7 @@ bash scripts/claude-skip-onboarding.sh
 
 Left alone, the first `claude` in a fresh Codespace walks you through an onboarding wizard,
 and the login screen inside it will cheerfully sign you into **your own** account instead of
-using the credential you were given. In a room of thirty that costs ten minutes and leaves the
+using the credential you were given. Across a whole room that costs ten minutes and leaves the
 class split across two different auth states, which is exactly what happened to me at SISMID.
 
 The script touches no credentials at all. It only marks onboarding complete and pre-accepts the
