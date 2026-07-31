@@ -4,258 +4,283 @@
 **STAI-X 2026, SC01: *Agentic AI: From Zero to Infinity*** &nbsp;·&nbsp; Boston, July 31, 2026
 &nbsp;·&nbsp; guest segment, 15 minutes + Q&A
 
----
-
-There are no slides for this segment. You are looking at the talk. The deck is a repo, the repo runs, and you can have it:
-
 > ### `github.com/Shihao-Yang/staix2026sc1`
 > Open in a Codespace, or clone it. Everything here executes.
+
+**No slides.** You are looking at the talk: one markdown file, a terminal underneath, and two
+notebooks. Live demo beats a deck for this.
 
 ---
 
 ## Where I am coming from
 
-I am not an agent researcher. I am a statistician who forecasts epidemics from internet
-search data, and who got tired of the parts of that job that are not statistics.
+* Not an agent researcher. A **statistician doing time series forecasting**, mostly
+  **forecasting epidemics from internet search data**.
 
-- My first paper, [ARGO](https://www.pnas.org/doi/10.1073/pnas.1515373112) (*PNAS* 2015),
-  used Google search volume to nowcast influenza.
-- I taught a Statistics and Modeling in Infectious Diseases (SISMID) short course this July where roughly 15 epidemiologists, some of whom
-  did not write code, used coding agents for two and a half days. That course is where most
-  of what follows was learned.
+* Taught a **SISMID** short course this July (Statistics and Modeling in Infectious Diseases):
+  ~15 epidemiologists, several of whom do not code, using coding agents for two and a half
+  days. That is where most of what follows was learned.
 
-Tian asked me to talk about getting started and hitting the ground running. Rather than slides, I think a live demo serve the purpose better. I have two examples, the primary one is for research, the secondary one is for education.
+* Tian asked me to cover **getting started and hitting the ground running**. Two use cases:
+  research (the main one) and education.
+
+### The research demo, and why this one
+
+* My first paper: [**ARGO**](https://www.pnas.org/doi/10.1073/pnas.1515373112)
+  (Yang, Santillana & Kou, *PNAS* 2015). Google search volume to nowcast influenza.
+
+* I did that work as a PhD student **in this department**. It took the better part of a year.
+
+* **So: how much of a year of PhD work can an agent reproduce in a 15 minute talk?**
+  That is the demo. Let us find out together.
+
+---
 
 ## The setup, in full
 
-I want to be concrete about how little there is, because the *perceived* setup cost is the main
-thing keeping people out. This is the whole stack, and we will do it live.
+* The **perceived** setup cost is the main thing keeping people out. So let me be concrete
+  about how little there is. This is the whole stack, and we do it live.
 
 ### 1. An environment
 
-A [GitHub Codespace](https://github.com/features/codespaces): a real Linux machine in a browser
-tab, free tier, nothing to install. Click the green **Code** button on any repo, choose the
-**Codespaces** tab, and create one. The free allowance is roughly 60 hours a month on a 2-core
-machine, far more than you will use today.
-
-At SISMID the whole room was running inside ten minutes, on their own free accounts, at zero
-cost to me. Codespaces earns its place mainly because it makes *a room full of people
-identical*. Working alone, your own terminal is just as good.
+* A [**GitHub Codespace**](https://github.com/features/codespaces): real Linux machine in a
+  browser tab, free tier, nothing to install.
+* Green **Code** button, **Codespaces** tab, create. Free allowance is ~60 hours a month on a
+  2-core machine, far more than today needs.
+* You will use it later today. You can already see me running this session inside one.
 
 ### 2. A terminal agent
 
-One `npm` command either way.
-
-**If you already have a ChatGPT account**, use [Codex](https://developers.openai.com/codex/cli)
-and sign in with it. Nothing to provision:
+* **Default: [Claude Code](https://claude.com/claude-code).** It is what this whole repo was
+  built with, and the one I can actually help you with in this room.
 
 ```bash
-npm install -g @openai/codex && codex
+npm install -g @anthropic-ai/claude-code
 ```
 
-**Otherwise** use [Claude Code](https://claude.com/claude-code), which is what everything in
-this repo was built with, and the one I can actually help you with in the room:
+* **Only if you already have a ChatGPT account** and would rather stay there, Codex is a
+  genuinely good alternative. Nothing to provision, it signs in with the account you have.
 
 ```bash
-npm install -g @anthropic-ai/claude-code && claude
+npm install -g @openai/codex
 ```
 
-Deliberately **not** the Copilot pane built into your editor. That is a genuinely different
-tool: terminal agents run code, read the errors, and fix themselves, and watching that loop is
-most of the point.
+* Deliberately **not** the Copilot pane inside your editor. Different kind of tool. Terminal
+  agents run code, read their own errors, and fix themselves. Watching that loop is the point.
 
 ### 3. Logging in
 
-**Codex** signs in with the ChatGPT account you already have. Run `codex`, and in a Codespace
-it prints a URL rather than opening a browser: open it in a normal tab, approve, come back.
+* **Claude Code**, with the API key from Tian's course workspace already in your environment:
+  just run `claude`.
 
-**Claude Code** uses the API key from Tian's course workspace (Settings, then API keys, at
-[platform.claude.com](https://platform.claude.com); it is shown **only once**, so save it):
+* **Codex**: run `codex`. In a Codespace it prints a URL instead of opening a browser. Open it
+  in a normal tab, approve, come back.
 
-```bash
-export ANTHROPIC_API_KEY='sk-ant-...'
-```
-
-Append that same line to `~/.bashrc` and it survives new terminals and a Codespace restart.
-
-**If the key does not work**, there is a shared class token in this repo, encrypted, that I
-unlock with a passcode I will say out loud:
+* **Backup if the key misbehaves.** There is a shared class token in this repo, encrypted. I
+  unlock it with a passcode I will say out loud. Use `source`, not `bash`, or nothing sticks:
 
 ```bash
 source scripts/claude-login.sh
 ```
 
-Use `source`, not `bash`, or the variable lands in a subshell that exits immediately and
-nothing sticks. Then:
+* Plain `claude` defaults to asking permission before every edit, which is slow to watch. For
+  the demo:
 
 ```bash
 claude --dangerously-skip-permissions
 ```
 
-Two warnings on that. **Start it in the terminal, not the VS Code Claude panel**: in a
-Codespace the panel loads before you unlock, cannot see the token, and will offer you a login
-screen that signs you into your own account instead. And the flag lets the agent read, edit and
-run commands without stopping to confirm each one, which I use in demos deliberately so you see
-what an agent does uninterrupted. It is fine here because a Codespace is disposable. **Do not
-make a habit of it on your own machine.**
+* Fine here because a Codespace is disposable. **Not a habit for your own machine.**
 
-### 4. One notebook, stacked *below* the agent
-
-The agent writes directly into the notebook, so you read markdown, code, figures and tables in
-one column.
-
-**Stack them vertically, not side by side.** This sounds trivial and is not. I ran
-side-by-side for two days at SISMID and watched people saccade left and right until they lost
-the thread. Top and bottom reads as one conversation flowing downward.
+> ### Time for the live demo
 
 ---
 
-That is the entire stack. No orchestration framework, no vector database, no multi-agent
-anything. **Everything in this repo was produced with the plainest possible use of a single
-agent**, and I want to be clear about that, because at a workshop called *From Zero to
-Infinity* it is easy to conclude you need to be near infinity before you start. You do not.
-The unglamorous end of this technology is where nearly all of my actual value has come from.
+## Your first task should be boring
 
-## Your first hour, once it is running
+* Do **not** open with something impressive. Open with something you already know how to do and
+  resent doing.
+* Then you can verify the result instantly, and you are betting nothing.
+* Trying to be impressed on day one is how people conclude it does not work.
 
-### Start with a boring task, not an impressive one
+**Fetching data is the demo that converts people.** Everyone dreads it, nobody feels expert at
+it, the agent is genuinely good at it, and one plot tells you whether it worked.
 
-Open with something you already know how to do and resent doing. Then you can verify the result
-instantly and you are betting nothing. Trying to be impressed on day one is how people conclude
-it does not work.
+```
+Download Google search interest for "dengue", "sintomas de dengue" and "mosquito"
+in Mexico over the past five years. Save it as a tidy CSV, plot all three, and tell
+me the date of the last data point.
+```
 
-The one in this repo, if you want to start without leaving:
+```
+Download the last five years of weekly US influenza data from CDC, save it as a
+tidy CSV, and plot it.
+```
 
-> *Look at `data/MX_Dengue_trends.csv` and tell me what is in it. Then plot each column over
-> time in a small grid so I can see the shape of everything at once.*
-
-Fetching data is the demonstration that tends to convert people. It is the chore everyone
-dreads and nobody feels expert at, the agent is genuinely good at it, and one plot tells you
-whether it worked:
-
-> *Download the last five years of weekly US influenza data from CDC FluView, save it as a tidy
-> CSV, and plot it.*
-
-Then point it at a mess you already have on disk. Something in this shape:
-
-> *This folder has one output CSV per simulation run, with the parameter settings encoded in
-> the filenames. Combine them into a single tidy table with those settings parsed into real
-> columns, and show me the row count per run so I can check nothing was dropped.*
-
-Note the last clause. **Ask for the number that would expose the failure**, not just the
-result. That habit is what the rest of this talk is about, and it is worth building from the
-very first task.
-
-### Four things that will each save you an afternoon
-
-**Write your environment's facts into a file the agent reads automatically.** Every agent has
-this: a plain markdown file at your project root, loaded into every session. Codex reads
-`AGENTS.md`, Claude Code reads `CLAUDE.md`, and both are just prose, so one file copied under
-the other name covers you either way. Put in it the things nobody can derive: this API
-rate-limits at ten calls a minute, this column is zero when it means missing, our cluster needs
-that module loaded first. Add to it every time you debug something surprising. This is the
-highest-return habit here and it compounds weekly.
-
-**Ask for the plan before the action, on anything that writes.** "Show me the table of changes
-and do not write anything until I say go." Reads are free. Writes deserve a look.
-
-**Give it a way to check itself.** An agent that can run the tests, see the plot, or read the
-error will iterate to something correct. One that only emits text into a chat window cannot.
-This is most of why terminal agents outperform completion panes.
-
-**Let it fail in front of you.** The instinct is to intervene the moment something breaks.
-Wait. Watching an agent read a traceback and fix its own bug teaches you more about what it can
-and cannot do than any amount of reading, and it calibrates you fast.
-
-## Two use cases
-
-Both are in this repo, both executed, both yours to fork.
+* **Your check, not the agent's:** does the last point land on the current week? Do the peaks
+  fall in a plausible season?
+* Ask for **the number that would expose the failure**, not just the result. That habit is what
+  the rest of this talk is about.
 
 ---
 
-### [1. Research: rebuild my own first paper, from prompts only](notebooks/01_research_dengue.ipynb)
+## Four habits that each save you an afternoon
 
-Dengue in Mexico, 2004-2011. Four prompts take it from a raw CSV to a working ARGO model with
-dynamic training, LASSO term selection, and a leak-free out-of-sample comparison against
-three benchmarks. **I wrote no Python.**
+### 1. Treat the agent like a second-year PhD student
 
-What the segment is actually about is the cell in the middle where I stop and check what the
-agent did, and find that it quietly patched a problem instead of reporting it.
+* Capable. Fast. Will absolutely make mistakes, and will not always tell you.
+* **You have the data intuition. That is the part that did not get automated.**
+* So ask constantly for **visualization**: raw data, cleaned data, results.
+* Ask for the **intermediate outputs you already know how to read**: MCMC trace plots,
+  cross-validation curves, residuals, coefficient paths. You know what wrong looks like.
+
+### 2. Write your environment's facts where the agent will read them
+
+* Every agent loads a plain markdown file at your project root, every session.
+  Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`. Same idea, both just prose.
+* Put in it what nobody can derive: *this API rate-limits at ten calls a minute*, *this column
+  is zero when it means missing*, *our cluster needs that module loaded first*.
+* Add to it every time you debug something surprising. **Highest-return habit here.**
+* **Skills** are the next step up: a reusable folder of instructions plus scripts, loaded only
+  when relevant. Mine for driving my email is a page of prose plus a file of accumulated
+  gotchas. It turned a fragile negotiation into one line.
+* The point of both: **stop re-explaining your setup in every conversation.**
+
+### 3. Ask for the plan before the action, on anything that writes
+
+* "Show me the table of changes and do not write anything until I say go."
+* **Reads are free. Writes get reviewed.**
+
+### 4. Let it fail in front of you
+
+* The instinct is to intervene the second something breaks. Wait.
+* Watching an agent read a traceback and fix its own bug calibrates you faster than any
+  amount of reading about what it can do.
 
 ---
 
-### [2. Education: the agent as my TA, not my students'](notebooks/02_education_reading_group.ipynb)
+## Use case 1 (research): rebuild my first paper, from prompts only
 
-I do not have a good answer for how students should use AI. I am not going to pretend
-otherwise.
+**[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** (prompts, empty
+cells) &nbsp;·&nbsp;
+**[`_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** (worked, executed)
 
-What I do have is the instructor's back office: Canvas as an API, a mailing list that lives
-in three email threads, recordings that become transcripts that become summaries. My reading
-group of ~28 students runs this way. It is unglamorous and it gave back more hours than
-anything else I did this year.
+* Dengue in Mexico, 2004-2011. **Four prompts**, from raw CSV to a working ARGO model:
+  dynamic training, LASSO term selection, leak-free out-of-sample comparison, three benchmarks.
+* **I wrote no Python.**
 
-## Five lessons, in the order I would want to hear them
+### The part that matters
 
-**1. Start with the boring task, not the impressive one.**
-The best first use of an agent is the thing you already know how to do and resent doing.
-Scraping a dataset, reshaping a file, renaming two hundred figures. You can verify the result
-instantly, which means you learn what the tool is like without betting anything on it. Trying
-to be impressed on day one is how people conclude it does not work.
+* Somewhere in the middle I stop and ask what the agent decided **for** me.
+* It had quietly swapped `log` for `log1p`. Correct patch. Never mentioned.
+* Why it matters: one search column is **exactly zero in 40% of months**. That is Google
+  thresholding low volume away. **Missingness wearing the costume of a small number.**
+* No prompt produces that sentence. It comes from knowing the data source.
 
-**2. Fetching data is where agents are strongest. Modeling is where they are riskiest.**
-This was the clearest split at SISMID and I did not expect it to be so clean. Data collection
-has a low judgment requirement and a visible answer: you plot the CSV and you know. Modeling
-is dense with silent design choices, and a wrong one produces a plausible number rather than
-an error. Delegate freely at one end, supervise closely at the other.
+### The honest table
 
-**3. The notebook is the safety mechanism.**
-Because the agent writes its code into cells, I can skim what it actually did. I once asked
-for sentiment analysis and glanced at the cell to find a single regular expression matching a
-handful of words. It ran, it produced numbers, and the numbers were meaningless. Ten seconds
-of reading caught it. A chat window would not have shown me that.
+| Model | RMSE | vs AR(3) |
+|---|---|---|
+| Static OLS, one term, frozen 2006 fit | 5,094 | 1.61 |
+| AR(3), dynamic 36-month window | 3,173 | 1.00 |
+| Search only, LASSO, dynamic | 4,301 | 1.36 |
+| **ARGO** (search + AR, LASSO, dynamic) | **3,094** | **0.98** |
 
-**4. Write your hard-won knowledge down where the agent will read it.**
-Every environment has facts nobody can derive: this API rate-limits at ten calls a minute,
-this column is zero when it means missing, our cluster needs that module loaded first. Put
-them in a file the agent loads automatically. This is the difference between a demo that
-works once and a workflow you rely on, and it compounds every week.
+* **Dynamic training is the big win.** Just refitting beats the frozen fit by ~40%.
+* **Autoregression does most of the rest.** Dengue is seasonal and persistent.
+* **Search adds ~2.5%.** Real, modest, and I am going to say so out loud rather than oversell
+  my own paper. The 2015 result was weekly US flu against millions of queries; this is monthly
+  dengue with four terms and 96 observations.
+* Writing that paragraph honestly is still my job, and it decides whether the analysis is good.
 
-**5. Reads are free. Writes get reviewed.**
-My whole safety policy. The agent reads my mailbox, my course site and my data as much as it
-likes. Anything that leaves my machine and reaches a student, a co-author or a public repo,
-I look at first. Not because the drafts are bad. Because the responsibility should stay
-attached to a person.
+> ### Time for the live demo
+
+---
+
+## Use case 2 (education): the agent as *my* TA, not my students'
+
+**[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)**
+
+### What I have not figured out
+
+* **I do not have a good answer for how students should use AI in assessment.** I have policies
+  in my syllabi and I am not confident in any of them.
+* I have gotten very good at using these tools for my own work while still not knowing what to
+  tell a first-year who asks if they may use one on a homework.
+* That gap is uncomfortable and I think it is the more important problem.
+
+### What I have figured out: the instructor's back office
+
+* Course sites, rosters, mailing lists, scheduling, recordings, transcripts, the steady stream
+  of individual student requests. Most of the hours, none of the glory.
+
+| | Research modeling | Course administration |
+|---|---|---|
+| Mistake visible? | Often not | Almost always, immediately |
+| Cost of a mistake | A wrong scientific claim | A wrong due date |
+| Needs domain judgment? | Constantly | Rarely |
+| Repetitive? | No | Relentlessly |
+
+* Everything in the right column says **delegate this**.
+
+### Three jobs it does for me
+
+* **Canvas is a REST API.** I hand-wrote a due-date shifter in 2024; it took an evening, mostly
+  pasting assignment IDs. Now it is one prompt. The real change is not the evening saved, it is
+  that **the class of tasks worth automating got much larger**.
+* **The mailing list nobody designed.** My reading group accreted to ~28 students across three
+  email threads. I stopped maintaining a list and started **re-deriving** it from the mailbox.
+* **Recordings to summaries.** Recording, transcript, summary, draft to the list. Audit the
+  transcript before trusting it: a summary of a hallucinated transcript looks exactly like a
+  real one.
+
+### The line I enforce
+
+| No review needed | I review, then it acts | I do it myself |
+|---|---|---|
+| Search mail, build the roster | Send any email to students | Anything touching a grade |
+| Pull transcripts, draft summaries | Publish to the course site | Accommodation calls |
+| Read the gradebook, flag anomalies | Bulk due-date changes | Anything I would not sign |
+
+* **Reads are free, writes are reviewed, and anything a student experiences as coming from me
+  has to actually have come from me.**
+* Student records are FERPA-protected. The roster in that notebook is fabricated.
+
+---
 
 ## The one that is not a tip
 
-Rebuilding ARGO took four prompts and about twenty minutes. It took me the better part of a
-year in 2015.
+* Rebuilding ARGO took **four prompts and about twenty minutes**. It took me most of a year
+  in 2015.
+* Nearly all of that year was plumbing. **Plumbing is now close to free.**
+* What did **not** get cheaper:
 
-Almost all of that year was plumbing, and plumbing is now close to free. But look at what did
-not get cheaper. Knowing that Google Trends thresholds low search volume to zero, so that 40%
-of one column is missingness wearing the costume of a small number. Deciding that a 2.5%
-improvement over a simple benchmark is modest, and writing that in the paper anyway. Choosing
-which idea was worth testing at all.
+| Still expensive | Now nearly free |
+|---|---|
+| Knowing Google Trends thresholds low volume to zero | Handling the zeros once you know |
+| Deciding 2.5% is modest, and saying so | Computing the 2.5% |
+| Choosing dynamic training as the idea worth testing | Implementing the rolling window |
+| Knowing leakage is the failure mode to guard against | Writing the leak-free split |
 
-The agent collapsed the distance between having an idea and seeing a number. It did nothing
-at all to the distance between seeing a number and believing it. If anything it made that
-second gap more dangerous, because the number now arrives so fast, and looking so finished.
-
-That gap is the job. It was always the job. It is just that it used to be hidden inside twelve
-months of data wrangling, and now it is the only thing left standing.
+* The agent collapsed the distance between **having an idea** and **seeing a number**.
+* It did nothing to the distance between **seeing a number** and **believing it**.
+* If anything that second gap got more dangerous, because the number now arrives fast and
+  looking finished.
+* **That gap is the job. It always was.** It used to be hidden inside twelve months of data
+  wrangling. Now it is the only thing left standing.
 
 ---
 
 ## Things I would like to argue about in Q&A
 
-- What do you tell a first-year student who asks whether they may use an agent on a homework?
+* What do you tell a first-year who asks whether they may use an agent on a homework?
   I do not have an answer I believe.
-- Does watching an agent produce a working model in four prompts teach a student the method,
-  or teach them that the method is somebody else's problem?
-- The "bring your own problem" format split my SISMID room cleanly in two: people with a
-  well-defined question got enormous value, people who came to look around got lost. Is that
-  fixable, or is it just what this format is?
-- Reads free, writes reviewed is a rule I can hold as one person. Does it survive a lab of
+* Does watching an agent build a working model in four prompts teach the method, or teach that
+  the method is somebody else's problem?
+* "Bring your own problem" split my SISMID room cleanly in two: people with a well-defined
+  question got enormous value, people who came to look around got lost. Fixable, or just what
+  the format is?
+* Reads free / writes reviewed is a rule I can hold as one person. Does it survive a lab of
   fifteen?
 
 ---
@@ -268,22 +293,24 @@ git clone https://github.com/Shihao-Yang/staix2026sc1.git
 
 Or open it in a Codespace from the green **Code** button. Every prompt lives in the notebook
 that uses it, so there is nothing else to look up. The long version of the lessons, written up
-from the SISMID course, is the appendix at the bottom of this page.
+from the SISMID course, is the appendix below.
 
-**Shihao Yang** · shihao.yang@isye.gatech.edu · ISyE, Georgia Tech
+**Shihao Yang** &nbsp;·&nbsp; shihao.yang@isye.gatech.edu &nbsp;·&nbsp; ISyE, Georgia Tech
 
 ---
 
 # Appendix: the long version of the lessons
+
+*Not needed to follow the talk. This is for anyone who wants to run something like
+this themselves.*
 
 Written up after **SISMID 2026**, where I co-taught "Statistics and Modeling with Novel Data
 Streams" with Mauricio Santillana: two and a half days, roughly fifteen epidemiologists and
 biostatisticians, several of whom do not write code for a living, all of them using coding
 agents throughout.
 
-This is the long version of the five lessons above. It is organized as environment, then
-teaching, then the open questions I have not solved. Nothing here is needed to follow the
-talk; it is for anyone who wants to run something like this themselves.
+It is organized as environment, then teaching, then the open questions I have not solved.
+The habits in the talk above are the compressed version of what is here.
 
 One framing note before anything else, because it determines which of these lessons transfer.
 

@@ -9,8 +9,9 @@ Guest segment for **STAI-X 2026, SC01: *Agentic AI: From Zero to Infinity***
 ## Start here
 
 > ### [`00_start_here.md`](00_start_here.md)
-> The talk itself. Setup, how to log in, your first hour, the two use cases, five lessons, and
-> the long-form appendix from teaching this at SISMID. **Read this first.**
+> The talk itself, written to be scrolled through while presenting: title-and-bullet sections,
+> every prompt in a copyable block. Setup, logging in, the two use cases, four habits, and a
+> long-form appendix from teaching this at SISMID. **Read this first.**
 
 Then the two use cases:
 

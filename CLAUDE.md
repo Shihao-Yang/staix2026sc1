@@ -33,9 +33,13 @@ notebooks**. Read this before editing anything here.
 ## Layout
 
 ```
-00_start_here.md                            the talk itself, at repo root, plain markdown so
-                                            it can be edited directly. Includes the setup, the
-                                            five lessons, and the long-form SISMID appendix.
+00_start_here.md                            the talk itself, at repo root. Written to be
+                                            SCROLLED THROUGH LIVE with a terminal below it:
+                                            title-and-bullet sections, terse lines, and every
+                                            prompt in a fenced block so it can be copied
+                                            straight into the terminal. Do not turn these back
+                                            into flowing paragraphs. Ends with the long-form
+                                            SISMID appendix.
 notebooks/01_research_dengue.ipynb          use case 1, hands-on: prompts + empty code cells
 notebooks/01_research_dengue_soln.ipynb     use case 1, worked: executed, with figures
 notebooks/02_education_reading_group.ipynb  use case 2, executed
