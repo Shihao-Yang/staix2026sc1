@@ -19,21 +19,26 @@ which is why courses use it. Alone, your laptop is fine.
 
 ## 2. Install an agent (2 minutes)
 
+Two good options. They are close enough that nothing in this repo depends on which you pick,
+so use whichever you already have access to.
+
+[Claude Code](https://claude.com/claude-code):
+
 ```bash
-npm install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/claude-code && claude
 ```
 
-Then start it in your project directory:
+[Codex](https://developers.openai.com/codex/cli):
 
 ```bash
-claude
+npm install -g @openai/codex && codex
 ```
 
-It will walk you through signing in on first run. [Codex](https://openai.com/codex) works
-comparably; use whichever you have access to.
+Either will walk you through signing in on first run.
 
-**Not** the Copilot-style completion pane inside your editor. That is a different kind of tool.
-You want the one that runs in a terminal, executes code, reads the errors, and fixes itself.
+What matters is the *category*, not the brand: you want the kind that runs in a terminal,
+executes code, reads its own errors, and fixes itself. **Not** the Copilot-style completion
+pane inside your editor, which is a genuinely different tool and will not do any of this.
 
 ## 3. Arrange your screen (30 seconds, matters more than it sounds)
 
@@ -49,40 +54,35 @@ the list.
 Do not open with something impressive. Open with something you already know how to do and
 resent doing, because then you can verify the result instantly and you are betting nothing.
 
-Good first prompts:
+The one in this repo, if you want to start without leaving:
 
 > Look at `data/MX_Dengue_trends.csv` and tell me what is in it. Then plot each column over time
 > in a small grid so I can see the shape of everything at once.
 
-> This folder has 200 figures named `fig_1.png` through `fig_200.png`. Rename them using the
-> experiment name in the matching `.json` sidecar file. Show me the first ten renames before
-> doing any of them.
+Fetching data is the demonstration that tends to convert people. It is the chore everyone
+dreads and nobody feels expert at, the agent is genuinely good at it, and one plot tells you
+whether it worked:
 
 > Download the last five years of weekly US influenza data from CDC FluView, save it as a tidy
 > CSV, and plot it.
 
-The last one is the demonstration that tends to convert people. Fetching data is the chore
-everyone dreads and nobody feels expert at, the agent is genuinely good at it, and one plot
-tells you whether it worked.
+Then do one against a mess you already have on disk. Something in this shape:
 
-## 5. Learn the one habit that matters
+> This folder has one output CSV per simulation run, with the parameter settings encoded in the
+> filenames. Combine them into a single tidy table with those settings parsed into real columns,
+> and show me the row count per run so I can check nothing was dropped.
 
-After the agent produces something, ask:
-
-> Walk me through what you just did, line by line. Where did you have to make a choice I did not
-> specify? What would break if my data were slightly different?
-
-This is the whole discipline. In [notebook 01](../notebooks/01_research_dengue.ipynb) that
-question is what surfaces the fact that the agent silently swapped `log` for `log1p`, because
-40% of a column was exactly zero. The patch was correct and the silence was not, and no amount
-of prompting for a better model would have revealed it.
+Note the last clause. Ask for the number that would expose the failure, not just the result.
+That is the habit the rest of this repo is about, and it is worth building from the first task.
 
 ---
 
 ## Four things that will save you an afternoon each
 
-**Write your environment's facts into a file the agent reads automatically.** A `CLAUDE.md` at
-your project root gets loaded every session. Put in it the things nobody can derive: this API
+**Write your environment's facts into a file the agent reads automatically.** Every agent has
+this: a plain markdown file at your project root that gets loaded into every session. Codex
+reads `AGENTS.md`, Claude Code reads `CLAUDE.md`, and both are just prose, so one file copied
+under the other name covers you either way. Put in it the things nobody can derive: this API
 rate-limits at ten calls a minute, this column is zero when it means missing, our cluster needs
 that module loaded first. Every time you debug something surprising, add it. This is the single
 highest-return habit in this document and it compounds weekly.
@@ -102,7 +102,12 @@ cannot do than any amount of reading, and it calibrates you fast.
 
 ## Where to go next
 
+Once the tool feels ordinary, the thing left to learn is how to check its work. That is a
+separate skill and it is the subject of the rest of this repo.
+
 - [`prompts/research-dengue.md`](../prompts/research-dengue.md): four prompts that build a real
-  forecasting model. Copy them and follow along.
+  forecasting model, plus the follow-up question worth asking after every one of them.
+- [`notebooks/01_research_dengue.ipynb`](../notebooks/01_research_dengue.ipynb): that follow-up
+  question catching a real silent decision, in a live analysis.
 - [`docs/lessons-learned.md`](lessons-learned.md): what worked and what did not, from teaching
   this to thirty people who mostly do not code.

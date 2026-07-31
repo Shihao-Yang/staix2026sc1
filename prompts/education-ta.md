@@ -74,8 +74,10 @@ publish nonsense, so the transcript step checks itself before the summary step r
 ## Write the environment knowledge down once
 
 The habit that made all of this reliable: stop re-explaining your setup every session, and put
-it in a file the agent loads automatically (a *skill*, a `CLAUDE.md`, whatever your tool calls
-it). A page of prose plus a companion file of accumulated gotchas.
+it in a file the agent loads automatically. Every agent has some version of this: Codex reads
+`AGENTS.md`, Claude Code reads `CLAUDE.md`, and Claude Code additionally lets you package a
+reusable one as a *skill*. All of them are just markdown, so the content ports. A page of prose
+plus a companion file of accumulated gotchas.
 
 Append to the gotchas file every time something breaks in a confusing way:
 
