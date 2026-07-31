@@ -13,7 +13,7 @@ This repo is a **15-minute conference talk delivered as one markdown file plus t
 
 - **No slides.** `00_start_here.md` and the notebooks replace the deck. This was an explicit choice: they show prompt, code, and result together, which is the talk's thesis. The talk prose is plain markdown at the repo root specifically so it can be edited directly.
 - **Notebooks are executed and committed with outputs.** Figures and tables must be visible on GitHub without running anything. If you edit a code cell, re-execute the notebook.
-- **Results are real and reported honestly.** ARGO beats the AR(3) benchmark by only ~2.5% in RMSE here. That modest number is *the teaching point* and must not be inflated. The original 2015 paper used weekly US flu data against millions of queries; this is monthly dengue with four terms and 96 observations, so a small margin is expected.
+- **Results are real and reported honestly, and every number is recomputed, never asserted.** The research notebook downloads both data sources live (Google Trends via pytrends, cases from OpenDengue) and re-executes. On the 2015-2019 window ARGO beats the AR(3) benchmark by ~10% RMSE with correlation 0.80 to 0.97. That is a genuine result, but it rests on **33 evaluation months**, and the notebook says so rather than rounding the caveat away. If you change the window or the data, re-run and update every quoted figure, including the table in `00_start_here.md`. Never let prose claim a number the notebook does not print.
 - **No student data.** The roster in notebook 02 is fabricated with the real structure and none of the real people. The actual reading group has ~28 named students; their names and addresses must never enter this public repo.
 - **`logs/` is gitignored** and may contain personal context from the authoring sessions.
 
@@ -32,7 +32,11 @@ notebooks/01_research_dengue_soln.ipynb     use case 1, worked: executed, with f
 notebooks/02_education_reading_group.ipynb  use case 2, executed
 scripts/                                    secret-encrypt.sh, claude-login.sh (only these two)
 secrets/                                    encrypted class credential + its README
-data/MX_Dengue_trends.csv                   Mexico dengue cases + Google search, 2004-2011
+data/                                       MX_Dengue_trends.csv is the old SISMID curated
+                                            file, kept only as the thing the live download is
+                                            checked against. gt_dengue_mx.csv and
+                                            opendengue_mexico_monthly.csv are download caches
+                                            so the notebook still runs without network.
 ```
 
 **There is no `docs/` and no `prompts/`, deliberately.** Every prompt lives in the notebook that uses it, and the prose lives in `00_start_here.md`. Both directories existed and were folded in, because a separate copy of a prompt is a copy that drifts. Do not reintroduce them.
@@ -55,14 +59,8 @@ For small text fixes, edit the `.ipynb` directly rather than regenerating. Note 
 
 ## Writing conventions
 
-- **Claude Code only.** Codex, ChatGPT and `AGENTS.md` were deliberately removed: the talk
-  is 15 minutes and the course provides Anthropic keys, so a second toolchain is time the
-  author does not have. Do not reintroduce them.
+- **Claude Code only.** Codex, ChatGPT and `AGENTS.md` were deliberately removed: the talk is 15 minutes and the course provides Anthropic keys, so a second toolchain is time the author does not have. Do not reintroduce them.
 - **No em dashes** in any English prose here (a standing preference of the author).
-- **Soft-wrap, do not hard-wrap.** Every paragraph and bullet is ONE long line, in the
-  markdown files and in notebook markdown cells alike. This is deliberate: the author
-  presents by scrolling the markdown in an editor and resizes the window, so the text must
-  reflow to whatever width is set. Do not reintroduce fixed-column line breaks. Code
-  fences, tables, and headings are exempt and stay as they are.
+- **Soft-wrap, do not hard-wrap.** Every paragraph and bullet is ONE long line, in the markdown files and in notebook markdown cells alike. This is deliberate: the author presents by scrolling the markdown in an editor and resizes the window, so the text must reflow to whatever width is set. Do not reintroduce fixed-column line breaks. Code fences, tables, and headings are exempt and stay as they are.
 - Prose over bullet fragments in the notebooks. These are read aloud and read later.
-- Do not oversell. The talk's credibility rests on the honest 2.5%.
+- Do not oversell. The talk's credibility rests on stating the caveats out loud: the coverage gaps, the changing case definition, and the small evaluation sample.

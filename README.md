@@ -47,7 +47,7 @@ The plumbing of computational research is now close to free, and a plain, unclev
 
 ## What is in the data
 
-`data/MX_Dengue_trends.csv` holds monthly reported dengue cases in Mexico (`Dengue CDC`) alongside Google search interest for four Spanish-language terms, 2004-2011 (96 months). From the [MIGHTE-lab SISMID](https://github.com/MIGHTE-lab/SISMID25) teaching materials.
+The research notebook **downloads its own data** at runtime: monthly Google search interest for Mexico via `pytrends`, and dengue case counts from the [OpenDengue](https://opendengue.org/) national extract. Both are cached into `data/` so the notebook still runs without a network. `data/MX_Dengue_trends.csv` is the older curated SISMID file, kept because the notebook checks the live download against it and the two disagree in an instructive way.
 
 There is **no student data in this repository**. The roster example in notebook 02 is fabricated; it preserves the structure of the real problem and none of the people.
 

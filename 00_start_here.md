@@ -64,7 +64,7 @@ claude --dangerously-skip-permissions
 ```
 
 * Fine here because a Codespace is disposable. **Not a habit for your own machine.**
-  * Demo for terminal agent vs copilot
+* Demo for terminal agent vs copilot
 
 ---
 
@@ -82,9 +82,15 @@ Download the last five years of weekly US influenza data from CDC, save it as a
 tidy CSV, and plot it.
 ```
 
+
+```
+Download all available monthly denuge case counts in mexico from OpenDengue
+```
 ---
 
-## Four habits that each save you an afternoon
+
+
+## Three habits
 
 ### 1. Treat the agent like a second-year PhD student
 
@@ -98,33 +104,19 @@ tidy CSV, and plot it.
 * Claude Code loads a plain markdown file at your project root, `CLAUDE.md`, into every session. Just prose, no format to learn.
 * Put in it what nobody can derive: *this API rate-limits at ten calls a minute*, *this column is zero when it means missing*, *our cluster needs that module loaded first*.
 * Add to it every time you debug something surprising. **Highest-return habit here.**
-
-> ### Demo: open `CLAUDE.md` in this repo
-> Do not read it. Point at three lines that are three different **kinds** of thing no agent could infer:
-> * **"Results are real and reported honestly... the 2.5% must not be inflated."** A scientific constraint. I told it once not to let me oversell my own paper, and it has held me to it across a dozen sessions.
-> * **"No student data. The roster in notebook 02 is fabricated."** An ethical one.
-> * **"Soft-wrap, do not hard-wrap."** A pure personal preference, and it stopped re-wrapping my files.
+* Demo for CLAUDE.md in this repo
 
 * **Skills** are the next step up: a reusable folder of instructions plus scripts, loaded only when relevant. Mine for driving my email is a page of prose plus a file of accumulated gotchas.
-
-> ### Demo: the gotchas file from my email skill
-> Two lines, each one an afternoon I am never spending again:
-> * *SSH timeout is not a broker failure. The box is asleep; Tailscale reports it active from a cached heartbeat, which is misleading.*
-> * *ASCII subjects only. Em-dashes get mangled in the SSH to Windows to COM pipeline.*
->
-> Nothing derives those. They were each discovered exactly once, in confusion, and written down.
+* Demo for fetching outlook email with and without skill, and ask claude to ask chatgpt
 
 * The point of both: **stop re-explaining your setup in every conversation.**
 
 ### 3. Ask for the plan before the action, on anything that writes
 
 * "Show me the table of changes and do not write anything until I say go."
-* **Reads are free. Writes get reviewed.**
+* Reads are free. Writes get reviewed.
 
-### 4. Let it fail in front of you
 
-* The instinct is to intervene the second something breaks. Wait.
-* Watching an agent read a traceback and fix its own bug calibrates you faster than any amount of reading about what it can do.
 
 ---
 
@@ -137,24 +129,26 @@ tidy CSV, and plot it.
 
 **Say while it runs:**
 
-* Dengue in Mexico, 2004-2011. **Four prompts**, raw CSV to a working ARGO model: dynamic training, LASSO term selection, leak-free out-of-sample comparison against three benchmarks.
+* **Nothing is pre-supplied.** Search interest from Google Trends, case counts from OpenDengue, both downloaded live in the first two cells.
 * **I wrote no Python.**
-* Then stop and ask what it decided **for** me. It quietly swapped `log` for `log1p`. Correct patch, never mentioned.
-* Why that matters: one search column is **exactly zero in 40% of months**. Google thresholds low volume away. **Missingness wearing the costume of a small number.**
-* **No prompt produces that sentence.** It comes from knowing the data source.
+* The Google Trends call **fails first time**: `pytrends` passes `method_whitelist` to urllib3, which renamed it. The agent read the traceback and dropped the argument on its own. But it dropped the retry logic with it. **It fixed the error, not the intent.**
+* Then interrogate the download before modeling. Three things it did not mention: the case record is **three islands** with 2008-2014 and 2020 missing; the case definition **changes** from confirmed to total partway through; and against my old curated file the totals match within 7% while the **median month differs by 30%**.
+* Then the model: it quietly swapped `log` for `log1p`, because one search column is **exactly zero in 40% of months**. Google thresholds low volume away. **Missingness wearing the costume of a small number.**
+* **No prompt produces those sentences.** They come from knowing the data source.
 
-**The numbers to quote:**
+**The numbers to quote** (2015-2019, the longest clean stretch, 33 evaluation months):
 
-| Model | RMSE | vs AR(3) |
-|---|---|---|
-| Static OLS, one term, frozen 2006 fit | 5,094 | 1.61 |
-| AR(3), dynamic 36-month window | 3,173 | 1.00 |
-| Search only, LASSO, dynamic | 4,301 | 1.36 |
-| **ARGO** (search + AR, LASSO, dynamic) | **3,094** | **0.98** |
+| Model | RMSE | Corr | vs AR(3) |
+|---|---|---|---|
+| Static OLS, one term, frozen fit | 25,333 | 0.97 | 2.38 |
+| AR(3), dynamic 24-month window | 10,666 | 0.80 | 1.00 |
+| Search only, LASSO, dynamic | 19,454 | 0.87 | 1.82 |
+| **ARGO** (search + AR, LASSO, dynamic) | **9,566** | **0.97** | **0.90** |
 
-* **Dynamic training is the big win.** Just refitting beats the frozen fit by ~40%.
-* **Autoregression does most of the rest.** Dengue is seasonal and persistent.
-* **Search adds ~2.5%.** Real, modest, and I say so rather than oversell my own paper. The 2015 result was weekly US flu against millions of queries; this is monthly dengue, four terms, 96 observations.
+* **Dynamic training is the big win.** The frozen fit is more than twice as bad as anything that keeps refitting.
+* **Search genuinely helps.** ARGO beats autoregression by ~10% RMSE, ~20% MAE. The striking part is correlation: AR(3) alone tracks at 0.80, ARGO at 0.97. **Autoregression gets the level, search catches the turns.** That is exactly the 2015 claim.
+* **But search alone is worse than autoregression.** Real and complementary, not sufficient. Reporting the search-only model as a success would be overselling.
+* **33 evaluation months is a small sample.** The honest summary is "the method reproduces and the direction is right," not "ARGO is 10% better."
 * **Writing that sentence honestly is still my job**, and it decides whether the analysis is any good.
 
 ---
@@ -194,10 +188,11 @@ tidy CSV, and plot it.
 
 | Still expensive | Now nearly free |
 |---|---|
+| Noticing the case record has a seven-year hole in it | Downloading and aggregating the record |
+| Knowing "confirmed" and "total" cases are different quantities | Joining the two tables |
 | Knowing Google Trends thresholds low volume to zero | Handling the zeros once you know |
-| Deciding 2.5% is modest, and saying so | Computing the 2.5% |
+| Deciding 33 months is a small sample, and saying so | Computing the 10% |
 | Choosing dynamic training as the idea worth testing | Implementing the rolling window |
-| Knowing leakage is the failure mode to guard against | Writing the leak-free split |
 
 * The agent collapsed the distance between **having an idea** and **seeing a number**.
 * It did nothing to the distance between **seeing a number** and **believing it**.
