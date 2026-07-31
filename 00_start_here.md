@@ -132,7 +132,7 @@ Download all available monthly denuge case counts in mexico from OpenDengue
 * **Nothing is pre-supplied.** Search interest from Google Trends, case counts from OpenDengue, both downloaded live in the first two cells.
 * **I wrote no Python.**
 * The Google Trends call **fails first time**: `pytrends` passes `method_whitelist` to urllib3, which renamed it. The agent read the traceback and dropped the argument on its own. But it dropped the retry logic with it. **It fixed the error, not the intent.**
-* Then interrogate the download before modeling. Three things it did not mention: the case record is **three islands** with 2008-2014 and 2020 missing; the case definition **changes** from confirmed to total partway through; and against my old curated file the totals match within 7% while the **median month differs by 30%**.
+* Then interrogate the download before modeling. **I asked for monthly; OpenDengue has no monthly for Mexico.** The agent silently picked weekly, invented a rule for weeks straddling a month boundary, and dropped partial months. Three more it did not mention: the record is **three islands** with 2008-2014 and 2020 missing; the case definition **changes** from confirmed to total partway through; and against my old curated file the totals match within 7% while the **median month differs by 30%**.
 * Then the model: it quietly swapped `log` for `log1p`, because one search column is **exactly zero in 40% of months**. Google thresholds low volume away. **Missingness wearing the costume of a small number.**
 * **No prompt produces those sentences.** They come from knowing the data source.
 
