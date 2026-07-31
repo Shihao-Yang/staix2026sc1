@@ -55,6 +55,9 @@ For small text fixes, edit the `.ipynb` directly rather than regenerating. Note 
 
 ## Writing conventions
 
+- **Claude Code only.** Codex, ChatGPT and `AGENTS.md` were deliberately removed: the talk
+  is 15 minutes and the course provides Anthropic keys, so a second toolchain is time the
+  author does not have. Do not reintroduce them.
 - **No em dashes** in any English prose here (a standing preference of the author).
 - **Soft-wrap, do not hard-wrap.** Every paragraph and bullet is ONE long line, in the
   markdown files and in notebook markdown cells alike. This is deliberate: the author

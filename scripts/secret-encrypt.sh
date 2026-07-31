@@ -8,7 +8,7 @@
 #
 # Usage:
 #   scripts/secret-encrypt.sh CLAUDE_CODE_OAUTH_TOKEN
-#   scripts/secret-encrypt.sh OPENAI_API_KEY
+#   scripts/secret-encrypt.sh ANTHROPIC_API_KEY
 #
 # The NAME you pass is the environment variable students will get when they unlock.
 set -euo pipefail

@@ -45,21 +45,13 @@
 npm install -g @anthropic-ai/claude-code
 ```
 
-* **Only if you already have a ChatGPT account** and would rather stay there, Codex is a genuinely good alternative. Nothing to provision, it signs in with the account you have.
-
-```bash
-npm install -g @openai/codex
-```
-
 * Deliberately **not** the Copilot pane inside your editor. Different kind of tool. Terminal agents run code, read their own errors, and fix themselves. Watching that loop is the point.
 
 ### 3. Logging in
 
 * **Claude Code**, with the API key from Tian's course workspace already in your environment: just run `claude`.
 
-* **Codex**: run `codex`. In a Codespace it prints a URL instead of opening a browser. Open it in a normal tab, approve, come back.
-
-* **Backup if the key misbehaves.** There is a shared class token in this repo, encrypted. I unlock it with a passcode I will say out loud. Use `source`, not `bash`, or nothing sticks:
+* There is a shared class token in this repo, encrypted. I unlock it with a passcode I will say out loud. Use `source`, not `bash`, or nothing sticks:
 
 ```bash
 source scripts/claude-login.sh
@@ -112,7 +104,7 @@ tidy CSV, and plot it.
 
 ### 2. Write your environment's facts where the agent will read them
 
-* Every agent loads a plain markdown file at your project root, every session. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`. Same idea, both just prose.
+* Claude Code loads a plain markdown file at your project root, `CLAUDE.md`, into every session. Just prose, no format to learn.
 * Put in it what nobody can derive: *this API rate-limits at ten calls a minute*, *this column is zero when it means missing*, *our cluster needs that module loaded first*.
 * Add to it every time you debug something surprising. **Highest-return habit here.**
 * **Skills** are the next step up: a reusable folder of instructions plus scripts, loaded only when relevant. Mine for driving my email is a page of prose plus a file of accumulated gotchas. It turned a fragile negotiation into one line.
@@ -267,7 +259,7 @@ One framing note before anything else, because it determines which of these less
 
 **Kill the installation step entirely.** I arranged authentication in advance so students opened a browser tab and were working. This mattered far more than any content decision I made. An introduction to agents does not need to be advanced: no multi-agent orchestration, no elaborate tooling. **Basic single-agent use already amazes people**, and every minute spent on setup is a minute spent losing the half of the room with the older laptop.
 
-**Use a terminal agent, not the editor's built-in assistant.** Claude Code and Codex both worked well. The Copilot-style inline pane is a different kind of tool and was not what the course needed: the terminal agents run code, read their own errors, and fix themselves, and watching that loop is a large part of what students are there to see.
+**Use a terminal agent, not the editor's built-in assistant.** The Copilot-style inline pane is a different kind of tool and was not what the course needed: the terminal agents run code, read their own errors, and fix themselves, and watching that loop is a large part of what students are there to see.
 
 **Data collection is where agents shine.** Scraping was consistently the most successful use in the whole course, and I did not fully expect that. Finding and fetching data is the thing everybody dreads and nobody feels expert at. The agent does it, the output is a CSV, and one plot tells you whether it worked. Low judgment requirement, instantly visible answer. If you are introducing agents to a research audience and want one demonstration that lands, use this one.
 
@@ -328,7 +320,7 @@ One framing note before anything else, because it determines which of these less
 
 - Vertical layout, agent below notebook.
 - One notebook per session, not a sprawling file tree.
-- Terminal agent (Claude Code or Codex), never the editor's built-in pane.
+- Terminal agent (Claude Code), never the editor's built-in pane.
 - Authentication solved before the room walks in.
 - Teach `git pull upstream main` on day one, or freeze the repo after forking.
 - Lead with a data-fetching demonstration.

@@ -5,8 +5,8 @@
 #     source scripts/claude-login.sh
 #
 # It asks once for the class passcode (given by the instructor in class), decrypts
-# every secrets/*.enc into an environment variable, and the agents (claude, codex)
-# pick those up automatically. It also saves the token into ~/.bashrc so that NEW
+# every secrets/*.enc into an environment variable, which `claude` picks up
+# automatically. It also saves the token into ~/.bashrc so that NEW
 # terminals and a Codespace restart stay logged in without re-running this script.
 # That does put the token in plaintext inside your (disposable) container, which is
 # fine for a throwaway Codespace but is not something you would do on a real machine.
