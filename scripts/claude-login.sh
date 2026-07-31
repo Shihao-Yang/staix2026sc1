@@ -65,13 +65,27 @@ for _al_f in $_al_files; do
 done
 unset SECRET_ENC_PASS _AL_PASS
 
-# Pre-complete Claude Code's first-run onboarding so interactive `claude` opens
-# straight to the prompt using the shared token, instead of showing the login wizard
-# (which would otherwise send a student into their OWN account). Lives in its own
-# script so the workspace-API-key path can get the same treatment without unlocking
-# anything. Idempotent; safe to re-run.
-if [ "$_al_ok" -gt 0 ] && [ -x "$_AL_ROOT/scripts/claude-skip-onboarding.sh" ]; then
-  bash "$_AL_ROOT/scripts/claude-skip-onboarding.sh" "$_AL_ROOT" >/dev/null 2>&1 || true
+# Pre-complete Claude Code's first-run onboarding so interactive `claude` opens straight
+# to the prompt using the shared token, instead of showing the login wizard (which would
+# otherwise send a student into their OWN account). Also pre-accept the folder-trust
+# dialog for this repo. Only matters on this shared-token path; the API-key path can go
+# through onboarding normally. Idempotent; safe to re-run; keeps existing settings.
+if [ "$_al_ok" -gt 0 ] && command -v python3 >/dev/null 2>&1; then
+  python3 - "$_AL_ROOT" <<'PY' 2>/dev/null || true
+import json, os, sys
+root = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
+p = os.path.expanduser("~/.claude.json")
+try:
+    d = json.load(open(p)) if os.path.exists(p) else {}
+except Exception:
+    d = {}
+if not isinstance(d, dict):
+    d = {}
+d["hasCompletedOnboarding"] = True
+d.setdefault("theme", "dark")
+d.setdefault("projects", {}).setdefault(root, {})["hasTrustDialogAccepted"] = True
+json.dump(d, open(p, "w"), indent=2)
+PY
 fi
 
 # Save the token(s) into ~/.bashrc so new terminals and a Codespace restart stay

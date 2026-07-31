@@ -20,13 +20,12 @@ Supporting material:
 - **[`docs/lessons-learned.md`](docs/lessons-learned.md)**: the long version, written up from
   teaching a SISMID 2026 short course where ~15 epidemiologists used coding agents for two and
   a half days.
-- **[`docs/agent-setup.md`](docs/agent-setup.md)**: install and log in. Codex if you already
-  have a ChatGPT account, Claude Code otherwise, plus the encrypted fallback token for when the
-  workspace key does not cooperate.
+- **[`secrets/README.md`](secrets/README.md)**: how the encrypted class credential works, and
+  how to create, rotate and revoke it if you reuse this repo for your own teaching.
 
-Getting started from zero now lives inside
-[`00_start_here.ipynb`](notebooks/00_start_here.ipynb) rather than in a separate file, so the
-setup, the first tasks, and the talk are one document.
+Installing, logging in, and your first tasks all live inside
+[`00_start_here.ipynb`](notebooks/00_start_here.ipynb) rather than in separate guides, so
+setup and talk are one document.
 
 ## Run it
 
