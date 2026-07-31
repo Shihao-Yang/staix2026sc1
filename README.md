@@ -17,7 +17,7 @@ Then the two use cases:
 |---|---|
 | **[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** | **Research, hands-on.** The four prompts that rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) on Mexican dengue data, with empty cells for your agent to fill. |
 | **[`notebooks/01_research_dengue_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** | **Research, worked.** The same thing executed, with figures, a model comparison table, and my honest reading of the results. Your fallback if the agent is not cooperating. |
-| **[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)** | **Education.** The agent as the instructor's TA: Canvas as an API, a mailing list reconstructed from three email threads, recordings to transcripts to summaries. |
+| **[`02_education_reading_group.md`](02_education_reading_group.md)** | **Education.** The agent as the instructor's TA: turning primary sources into a lecture deck, a mailing list re-derived from three email threads, scheduling, and the fifteenth identical student request. Prompts only, no code. |
 
 Every prompt lives in the notebook that uses it. There is nothing else to look up.
 

@@ -155,14 +155,14 @@ Download all available monthly denuge case counts in mexico from OpenDengue
 
 ## Use case 2 (education): the agent as *my* TA, not my students'
 
-> ### Switch to the notebook now
-> **[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)**
+> ### Switch to [`02_education_reading_group.md`](02_education_reading_group.md) now
+> Same format as this file: scroll it, copy the prompts into the terminal. Runs against my real mailbox, so this one comes off my laptop rather than a Codespace.
 
 **Open with what I have not solved:**
 
 * **I have no good answer for how students should use AI in assessment.** I have policies in my syllabi and I am not confident in any of them.
-* I have gotten very good at using these tools for my own work while still not knowing what to tell a first-year who asks if they may use one on a homework.
-* That gap is uncomfortable, and I think it is the more important problem.
+* I have gotten fluent at using these tools for my own work while still not knowing what to tell a first-year who asks whether they may use one on a homework.
+* That gap is uncomfortable, and it is the more important problem. Better to say so than sell a solution I do not have.
 
 **Then what I have solved: the instructor's back office.**
 
@@ -173,11 +173,16 @@ Download all available monthly denuge case counts in mexico from OpenDengue
 | Needs domain judgment? | Constantly | Rarely |
 | Repetitive? | No | Relentlessly |
 
-* Everything in the right column says **delegate this**.
-* **Canvas is a REST API.** I hand-wrote a due-date shifter in 2024; an evening, mostly pasting assignment IDs. Now one prompt. The real change is not the evening saved, it is that **the class of tasks worth automating got much larger**.
-* **The mailing list nobody designed.** ~28 students across three email threads. I stopped maintaining a list and started **re-deriving** it from the mailbox.
-* **Recordings to summaries.** Audit the transcript before trusting it: a summary of a hallucinated transcript looks exactly like a real one.
-* **Reads are free, writes are reviewed**, and anything a student experiences as coming from me has to actually have come from me. FERPA is real; that roster is fabricated.
+* Everything in the right column says **delegate this**. The output is the check: I look at the email, or the slide, and either it is right or it is not.
+
+**The four demos, in order:**
+
+* **Teaching material.** Fetch Anthropic's Agent Skills docs and blog post into sourced digests, then build a Beamer deck from the digests. Sixteen frames, compiled, taught the next day. **Two prompts, not one:** fetch and digest first, or it invents the content.
+* **The mailing list nobody designed.** ~28 students accreted across three email threads. I stopped maintaining a list and started **re-deriving** it from the mailbox. Watch for two traps: exclude yourself, and let a removal beat an earlier join.
+* **The scheduling poll, which half fails on purpose.** A real Microsoft 365 poll is a rendered widget, not text. The terminal agent cannot click it; the desktop app can, by driving Chrome; and even then the poll is a cross-origin iframe that keyboard input will not cross. **Terminal agents are excellent at APIs and files, and blind to anything that only exists as a widget.** Worth showing a limit honestly.
+* **The fifteenth identical request.** Drafts in my voice, all of them shown as a list before anything is created. Two minutes instead of forty.
+
+* **Reads are free, writes are reviewed**, and anything a student experiences as coming from me has to actually have come from me. FERPA is real; there is no student data in this repo.
 
 ---
 
