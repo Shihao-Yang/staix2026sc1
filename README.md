@@ -23,8 +23,10 @@ Supporting material:
 - **[`docs/agent-setup.md`](docs/agent-setup.md)**: install and log in. Codex if you already
   have a ChatGPT account, Claude Code otherwise, plus the encrypted fallback token for when the
   workspace key does not cooperate.
-- **[`docs/getting-started.md`](docs/getting-started.md)**: zero to a working agent in about
-  ten minutes.
+
+Getting started from zero now lives inside
+[`00_start_here.ipynb`](notebooks/00_start_here.ipynb) rather than in a separate file, so the
+setup, the first tasks, and the talk are one document.
 
 ## Run it
 

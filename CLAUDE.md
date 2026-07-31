@@ -37,7 +37,7 @@ notebooks/01_research_dengue.ipynb         use case 1, executed with figures
 notebooks/02_education_reading_group.ipynb use case 2, executed
 prompts/                                   every prompt as copy-pasteable text
 docs/lessons-learned.md                    long-form lessons from SISMID 2026
-docs/getting-started.md                    zero to a working agent
+docs/agent-setup.md                        install, login, encrypted class token
 data/MX_Dengue_trends.csv                  Mexico dengue cases + Google search, 2004-2011
 ```
 
