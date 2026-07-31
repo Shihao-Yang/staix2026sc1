@@ -4,6 +4,7 @@ logs/
 # Build scratch
 scratch_*.py
 build_*_nb.py
+unwrap.py
 
 .venv/
 __pycache__/

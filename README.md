@@ -1,8 +1,6 @@
 # Out-of-the-Box Agentic AI for Research and Education
 
-Guest segment for **STAI-X 2026, SC01: *Agentic AI: From Zero to Infinity***
-(Tian Zheng, Columbia; Boston, July 31 2026).
-15 minutes plus Q&A, by **[Shihao Yang](https://shihaoyang.info)**, Georgia Tech ISyE.
+Guest segment for **STAI-X 2026, SC01: *Agentic AI: From Zero to Infinity*** (Tian Zheng, Columbia; Boston, July 31 2026). 15 minutes plus Q&A, by **[Shihao Yang](https://shihaoyang.info)**, Georgia Tech ISyE.
 
 **There are no slides.** The talk is a markdown file and three notebooks, and they run.
 
@@ -25,9 +23,7 @@ Every prompt lives in the notebook that uses it. There is nothing else to look u
 
 ## Run it
 
-**In the browser (recommended).** Click the green **Code** button, choose the **Codespaces**
-tab, and create a codespace on `main`. The container builds in about a minute with everything
-installed.
+**In the browser (recommended).** Click the green **Code** button, choose the **Codespaces** tab, and create a codespace on `main`. The container builds in about a minute with everything installed.
 
 **Locally.** Python 3.11 or newer:
 
@@ -43,37 +39,26 @@ cd staix2026sc1 && python3 -m venv .venv && .venv/bin/pip install -r requirement
 .venv/bin/jupyter lab
 ```
 
-The solution notebook runs end to end in under a minute on the bundled data, and needs no API
-key. Installing and logging in an agent is covered in [`00_start_here.md`](00_start_here.md).
+The solution notebook runs end to end in under a minute on the bundled data, and needs no API key. Installing and logging in an agent is covered in [`00_start_here.md`](00_start_here.md).
 
 ## The argument in three sentences
 
-The plumbing of computational research is now close to free, and a plain, unclever coding
-agent is enough to capture nearly all of that. What did not get cheaper is knowing which
-analysis is worth running, and whether the number that came back deserves to be believed. So
-the useful skill is no longer implementation, it is verification, and the notebook format is
-what makes verification possible at speed.
+The plumbing of computational research is now close to free, and a plain, unclever coding agent is enough to capture nearly all of that. What did not get cheaper is knowing which analysis is worth running, and whether the number that came back deserves to be believed. So the useful skill is no longer implementation, it is verification, and the notebook format is what makes verification possible at speed.
 
 ## What is in the data
 
-`data/MX_Dengue_trends.csv` holds monthly reported dengue cases in Mexico (`Dengue CDC`)
-alongside Google search interest for four Spanish-language terms, 2004-2011 (96 months). From
-the [MIGHTE-lab SISMID](https://github.com/MIGHTE-lab/SISMID25) teaching materials.
+`data/MX_Dengue_trends.csv` holds monthly reported dengue cases in Mexico (`Dengue CDC`) alongside Google search interest for four Spanish-language terms, 2004-2011 (96 months). From the [MIGHTE-lab SISMID](https://github.com/MIGHTE-lab/SISMID25) teaching materials.
 
-There is **no student data in this repository**. The roster example in notebook 02 is
-fabricated; it preserves the structure of the real problem and none of the people.
+There is **no student data in this repository**. The roster example in notebook 02 is fabricated; it preserves the structure of the real problem and none of the people.
 
 ## For instructors reusing this
 
-[`secrets/README.md`](secrets/README.md) explains the encrypted class credential: how to
-create, rotate and revoke it, and why the passcode is the entire security model.
+[`secrets/README.md`](secrets/README.md) explains the encrypted class credential: how to create, rotate and revoke it, and why the passcode is the entire security model.
 
 ## Related
 
-- [`Shihao-Yang/sismid2026`](https://github.com/Shihao-Yang/sismid2026): the full SISMID 2026
-  short course this material was distilled from.
-- [ARGO](https://www.pnas.org/doi/10.1073/pnas.1515373112): Yang, Santillana & Kou, *PNAS*
-  112(47), 2015.
+- [`Shihao-Yang/sismid2026`](https://github.com/Shihao-Yang/sismid2026): the full SISMID 2026 short course this material was distilled from.
+- [ARGO](https://www.pnas.org/doi/10.1073/pnas.1515373112): Yang, Santillana & Kou, *PNAS* 112(47), 2015.
 
 ## License
 
