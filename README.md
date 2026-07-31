@@ -15,8 +15,9 @@ Then the two use cases:
 
 | | |
 |---|---|
-| **[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** | **Research, hands-on.** The four prompts that rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) on Mexican dengue data, with empty cells for your agent to fill. |
-| **[`notebooks/01_research_dengue_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** | **Research, worked.** The same thing executed, with figures, a model comparison table, and my honest reading of the results. Your fallback if the agent is not cooperating. |
+| **[`notebooks/01a_research_data.ipynb`](notebooks/01a_research_data.ipynb)** | **Research, part A.** Download both data sources live, then interrogate what came back. The slow half, and the one most likely to break, which is the point. |
+| **[`notebooks/01b_research_model.ipynb`](notebooks/01b_research_model.ipynb)** | **Research, part B.** Rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) from three prompts. Starts from pre-fetched data so it runs instantly. Drive this in a second session, in parallel with part A. |
+| **[`notebooks/01_research_soln.ipynb`](notebooks/01_research_soln.ipynb)** | **Research, worked.** Both halves executed, with figures, the model comparison table, and my honest reading of the results. Your fallback if an agent is not cooperating. |
 | **[`02_education_reading_group.md`](02_education_reading_group.md)** | **Education.** The agent as the instructor's TA: turning primary sources into a lecture deck, a mailing list re-derived from three email threads, scheduling, and the fifteenth identical student request. Prompts only, no code. |
 
 Every prompt lives in the notebook that uses it. There is nothing else to look up.

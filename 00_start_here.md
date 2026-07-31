@@ -125,7 +125,10 @@ Download all available monthly denuge case counts in mexico from OpenDengue
 ## Use case 1 (research): rebuild my first paper, from prompts only
 
 > ### Switch to the notebook now
-> **[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** to drive it live &nbsp;·&nbsp; **[`_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** if the room needs the answer fast
+> Two notebooks, **two Claude sessions side by side**, because part A talks to the internet and part B must not wait for it.
+> * **[`01a_research_data.ipynb`](notebooks/01a_research_data.ipynb)** downloads and interrogates. Slow, and the one that breaks.
+> * **[`01b_research_model.ipynb`](notebooks/01b_research_model.ipynb)** models from pre-fetched data. Instant.
+> * **[`01_research_soln.ipynb`](notebooks/01_research_soln.ipynb)** if the room needs the answer fast.
 
 **Say while it runs:**
 
