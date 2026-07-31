@@ -1,0 +1,27 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Shihao Yang
+
+This is teaching material. You are free to:
+
+  Share — copy and redistribute the material in any medium or format
+  Adapt — remix, transform, and build upon the material for any purpose,
+          including commercially
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made. You may do so in any reasonable
+  manner, but not in any way that suggests the licensor endorses you or your
+  use.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+The dataset in data/MX_Dengue_trends.csv is redistributed from the MIGHTE-lab
+SISMID teaching repositories (https://github.com/MIGHTE-lab/SISMID25).
+
+The ARGO method reproduced in notebooks/01_research_dengue.ipynb is described in:
+  Yang S, Santillana M, Kou SC. "Accurate estimation of influenza epidemics using
+  Google search data via ARGO." PNAS 112(47):14473-14478, 2015.

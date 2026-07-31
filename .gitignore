@@ -1,0 +1,17 @@
+# Session logs may contain personal context (email content, collaborator names).
+logs/
+
+# Build scratch
+scratch_*.py
+build_*_nb.py
+
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Never commit credentials
+.env
+*.key
+secrets/
