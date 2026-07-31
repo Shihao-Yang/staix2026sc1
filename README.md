@@ -4,34 +4,29 @@ Guest segment for **STAI-X 2026, SC01: *Agentic AI: From Zero to Infinity***
 (Tian Zheng, Columbia; Boston, July 31 2026).
 15 minutes plus Q&A, by **[Shihao Yang](https://shihaoyang.info)**, Georgia Tech ISyE.
 
-**There are no slides.** The talk is three Jupyter notebooks, and they run.
+**There are no slides.** The talk is a markdown file and three notebooks, and they run.
 
 ## Start here
 
+> ### [`00_start_here.md`](00_start_here.md)
+> The talk itself. Setup, how to log in, your first hour, the two use cases, five lessons, and
+> the long-form appendix from teaching this at SISMID. **Read this first.**
+
+Then the two use cases:
+
 | | |
 |---|---|
-| **[`00_start_here.ipynb`](notebooks/00_start_here.ipynb)** | The talk. Setup, the two use cases, five lessons. Read this first. |
-| **[`01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** | **Research.** Rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) on Mexican dengue data from four prompts, with no hand-written Python. Executed, with figures and a model comparison table. |
-| **[`02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)** | **Education.** The agent as the instructor's TA: Canvas as an API, a mailing list reconstructed from three email threads, recordings to transcripts to summaries. |
+| **[`notebooks/01_research_dengue.ipynb`](notebooks/01_research_dengue.ipynb)** | **Research, hands-on.** The four prompts that rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) on Mexican dengue data, with empty cells for your agent to fill. |
+| **[`notebooks/01_research_dengue_soln.ipynb`](notebooks/01_research_dengue_soln.ipynb)** | **Research, worked.** The same thing executed, with figures, a model comparison table, and my honest reading of the results. Your fallback if the agent is not cooperating. |
+| **[`notebooks/02_education_reading_group.ipynb`](notebooks/02_education_reading_group.ipynb)** | **Education.** The agent as the instructor's TA: Canvas as an API, a mailing list reconstructed from three email threads, recordings to transcripts to summaries. |
 
-Supporting material:
-
-- **[`prompts/`](prompts/)**: every prompt from both notebooks as copy-pasteable text.
-- **[`docs/lessons-learned.md`](docs/lessons-learned.md)**: the long version, written up from
-  teaching a SISMID 2026 short course where ~15 epidemiologists used coding agents for two and
-  a half days.
-- **[`secrets/README.md`](secrets/README.md)**: how the encrypted class credential works, and
-  how to create, rotate and revoke it if you reuse this repo for your own teaching.
-
-Installing, logging in, and your first tasks all live inside
-[`00_start_here.ipynb`](notebooks/00_start_here.ipynb) rather than in separate guides, so
-setup and talk are one document.
+Every prompt lives in the notebook that uses it. There is nothing else to look up.
 
 ## Run it
 
 **In the browser (recommended).** Click the green **Code** button, choose the **Codespaces**
 tab, and create a codespace on `main`. The container builds in about a minute with everything
-installed. Then open `notebooks/00_start_here.ipynb`.
+installed.
 
 **Locally.** Python 3.11 or newer:
 
@@ -47,8 +42,8 @@ cd staix2026sc1 && python3 -m venv .venv && .venv/bin/pip install -r requirement
 .venv/bin/jupyter lab
 ```
 
-The research notebook runs end to end in under a minute on the bundled data. Nothing here
-needs an API key.
+The solution notebook runs end to end in under a minute on the bundled data, and needs no API
+key. Installing and logging in an agent is covered in [`00_start_here.md`](00_start_here.md).
 
 ## The argument in three sentences
 
@@ -60,12 +55,17 @@ what makes verification possible at speed.
 
 ## What is in the data
 
-`data/MX_Dengue_trends.csv` holds monthly reported dengue cases in Mexico (`Dengue CDC`) alongside
-Google search interest for four Spanish-language terms, 2004-2011 (96 months). From the
-[MIGHTE-lab SISMID](https://github.com/MIGHTE-lab/SISMID25) teaching materials.
+`data/MX_Dengue_trends.csv` holds monthly reported dengue cases in Mexico (`Dengue CDC`)
+alongside Google search interest for four Spanish-language terms, 2004-2011 (96 months). From
+the [MIGHTE-lab SISMID](https://github.com/MIGHTE-lab/SISMID25) teaching materials.
 
 There is **no student data in this repository**. The roster example in notebook 02 is
 fabricated; it preserves the structure of the real problem and none of the people.
+
+## For instructors reusing this
+
+[`secrets/README.md`](secrets/README.md) explains the encrypted class credential: how to
+create, rotate and revoke it, and why the passcode is the entire security model.
 
 ## Related
 
