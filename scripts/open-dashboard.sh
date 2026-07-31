@@ -15,6 +15,12 @@
 #   --public        make the forwarded port public       (Codespaces only)
 #   --no-clone      fail instead of cloning LoopPlane
 #   --no-open       print the URL, do not launch a browser
+#   --allow-forwarded-origin
+#                   fix "same-origin check failed" when you click an action
+#                   button through a forwarded URL. Sets same_origin_required
+#                   false in the workflow's config/security.json and restarts.
+#                   The dashboard token is still required, so this drops the
+#                   CSRF belt and keeps the braces.
 
 set -uo pipefail
 
@@ -24,6 +30,7 @@ PORT="${LOOPPLANE_PORT:-8765}"
 PUBLIC=0
 CLONE=1
 OPEN=1
+ALLOW_ORIGIN=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -32,7 +39,8 @@ while [ $# -gt 0 ]; do
     --public)  PUBLIC=1; shift ;;
     --no-clone) CLONE=0; shift ;;
     --no-open) OPEN=0; shift ;;
-    -h|--help) sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --allow-forwarded-origin) ALLOW_ORIGIN=1; shift ;;
+    -h|--help) sed -n '2,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown flag: $1 (try --help)" >&2; exit 2 ;;
   esac
 done
@@ -70,6 +78,30 @@ fi
 # --- start the dashboard ----------------------------------------------------
 mkdir -p "$PROJECT/.loopplane"
 LOG="$PROJECT/.loopplane/dashboard.log"
+
+# LoopPlane only accepts POSTs whose origin is the host it bound to, so through a
+# forwarded URL every action button returns 403 "same-origin check failed". This
+# turns that check off. The token is still required for mutating calls, verified
+# against v1.6.0: an off-origin POST without one is still a 401.
+if [ "$ALLOW_ORIGIN" = 1 ]; then
+  python3 - "$PROJECT" <<'PY' || { echo "Could not patch security.json" >&2; exit 1; }
+import glob, json, os, sys
+found = 0
+for path in glob.glob(os.path.join(sys.argv[1], ".loopplane/workflows/*/config/security.json")):
+    with open(path, encoding="utf-8") as fh:
+        cfg = json.load(fh)
+    cfg.setdefault("dashboard", {})["same_origin_required"] = False
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(cfg, fh, indent=2, sort_keys=True)
+        fh.write("\n")
+    print(f"same_origin_required false in {os.path.relpath(path, sys.argv[1])}")
+    found += 1
+if not found:
+    print("No workflow security.json found to patch.", file=sys.stderr)
+PY
+  # The running server holds the old setting in memory, so it has to be replaced.
+  python3 "$LP/scripts/loopplane" dashboard stop --project "$PROJECT" >/dev/null 2>&1 || true
+fi
 
 # Probe in a subshell: `exec` with no command in THIS shell would make the
 # redirection permanent and silently swallow every later error message.
