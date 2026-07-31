@@ -14,6 +14,7 @@ This repo is a **15-minute conference talk delivered as one markdown file plus t
 - **No slides.** `00_start_here.md` and the notebooks replace the deck. This was an explicit choice: they show prompt, code, and result together, which is the talk's thesis. The talk prose is plain markdown at the repo root specifically so it can be edited directly.
 - **Notebooks are executed and committed with outputs.** Figures and tables must be visible on GitHub without running anything. If you edit a code cell, re-execute the notebook.
 - **Results are real and reported honestly, and every number is recomputed, never asserted.** The research notebook downloads both data sources live (Google Trends via pytrends, cases from OpenDengue) and re-executes. On the 2015-2019 window ARGO beats the AR(3) benchmark by ~10% RMSE with correlation 0.80 to 0.97. That is a genuine result, but it rests on **33 evaluation months**, and the notebook says so rather than rounding the caveat away. If you change the window or the data, re-run and update every quoted figure, including the table in `00_start_here.md`. Never let prose claim a number the notebook does not print.
+- **LoopPlane is third-party and never vendored.** `scripts/open-dashboard.sh` clones `github.com/LJC-FVNR/LoopPlane` on demand; `LoopPlane/`, `.loopplane/` and `LOOPPLANE_DASHBOARD.url` are all gitignored. Two facts the script exists to paper over, verified against v1.6.0 on 2026-07-31: the dashboard is **token-gated** (bare host:port is a 401, the real link lands in `LOOPPLANE_DASHBOARD.url`), and it accepts **POSTs only from its bind origin**, so through a forwarded Codespaces URL you can read the dashboard but not click anything that acts. If either changes upstream, fix the script and the caveat in `03_loopplane_research_loop.md` together.
 - **No student data.** The roster in notebook 02 is fabricated with the real structure and none of the real people. The actual reading group has ~28 named students; their names and addresses must never enter this public repo.
 - **`logs/` is gitignored** and may contain personal context from the authoring sessions.
 
@@ -40,7 +41,12 @@ notebooks/01_research_soln.ipynb            use case 1, worked: both halves, exe
                                             real Outlook, so it is driven from his laptop, not a
                                             Codespace. Deliberately NOT a notebook: there is no
                                             code to execute, only prompts.
-scripts/                                    secret-encrypt.sh, claude-login.sh (only these two)
+03_loopplane_research_loop.md               use case 3, at repo root. Same scroll-and-copy format.
+                                            ONE prompt (taken verbatim from slide 2 of "AI Agent
+                                            for Research.pptx") that hands a whole study to
+                                            LoopPlane. Deliberately NOT a notebook: no code to
+                                            execute, and the audience runs it on their OWN project.
+scripts/                                    secret-encrypt.sh, claude-login.sh, open-dashboard.sh
 secrets/                                    encrypted class credential + its README
 data/                                       MX_Dengue_trends.csv is the old SISMID curated
                                             file, kept only as the thing the live download is

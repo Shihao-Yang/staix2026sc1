@@ -19,6 +19,7 @@ Then the two use cases:
 | **[`notebooks/01b_research_model.ipynb`](notebooks/01b_research_model.ipynb)** | **Research, part B.** Rebuild the ARGO model (Yang, Santillana & Kou, *PNAS* 2015) from three prompts. Starts from pre-fetched data so it runs instantly. Drive this in a second session, in parallel with part A. |
 | **[`notebooks/01_research_soln.ipynb`](notebooks/01_research_soln.ipynb)** | **Research, worked.** Both halves executed, with figures, the model comparison table, and my honest reading of the results. Your fallback if an agent is not cooperating. |
 | **[`02_education_reading_group.md`](02_education_reading_group.md)** | **Education.** The agent as the instructor's TA: turning primary sources into a lecture deck, a mailing list re-derived from three email threads, scheduling, and the fifteenth identical student request. Prompts only, no code. |
+| **[`03_loopplane_research_loop.md`](03_loopplane_research_loop.md)** | **Research, scaled up.** One prompt that hands a whole study to a durable, resumable loop with a plan you approve and a dashboard you watch. Run it on your own project. Prompts only; `scripts/open-dashboard.sh` gets you the dashboard URL. |
 
 Every prompt lives in the notebook that uses it. There is nothing else to look up.
 

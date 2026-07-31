@@ -6,6 +6,11 @@ scratch_*.py
 build_*_nb.py
 unwrap.py
 
+# LoopPlane is cloned on demand by scripts/open-dashboard.sh, not vendored here.
+LoopPlane/
+.loopplane/
+LOOPPLANE_DASHBOARD.url
+
 .venv/
 __pycache__/
 *.pyc

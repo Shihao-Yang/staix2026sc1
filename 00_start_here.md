@@ -189,6 +189,20 @@ Download all available monthly denuge case counts in mexico from OpenDengue
 
 ---
 
+## Use case 3 (research, scaled up): hand the whole study to a durable loop
+
+> ### If you want to run this yourself: [`03_loopplane_research_loop.md`](03_loopplane_research_loop.md)
+> One prompt, no code. It is the engine behind my own work over the last eight months, rebuilt as **LoopPlane** and now public under Apache-2.0.
+
+* Use case 1 was one model in one notebook, with me watching every step. This is what happens when you stop watching and give the agent a study to run for days.
+* **A study becomes a folder, not a chat:** the brief, the plan, the evidence each task produced, the validation, and an append-only log of everything that happened.
+* **Two checks, not one, and this is the part worth stealing even if you never install it.** The task validator asks "did this task produce the file it was supposed to?" The objective gate asks "given all the evidence so far, is the goal actually met?" Every task can pass and the gate can still say not yet.
+* You are not trying to train a more honest agent. You are building a workflow where **a dishonest step does not survive a check.**
+* **Where the blueprint comes from:** the grant proposal. Problem, idea, plan of attack, where the hard parts are, fallbacks when a wall will not move. That is already an executable plan, which makes proposal quality objectively testable: a good proposal is one an agent can execute end to end, looking things up in it when stuck.
+* **The systems argument.** The LLM is a new prime mover. Bolting it onto one giant prompt wastes it. The revolution was never the steam engine, it was the railroad built around it, and industrializing exactly those systems is what our field was born doing.
+
+---
+
 ## The one that is not a tip
 
 * Rebuilding ARGO took **four prompts and about twenty minutes**. It took me most of a year in 2015.
