@@ -15,12 +15,13 @@
 #   --public        make the forwarded port public       (Codespaces only)
 #   --no-clone      fail instead of cloning LoopPlane
 #   --no-open       print the URL, do not launch a browser
-#   --allow-forwarded-origin
-#                   fix "same-origin check failed" when you click an action
-#                   button through a forwarded URL. Sets same_origin_required
-#                   false in the workflow's config/security.json and restarts.
-#                   The dashboard token is still required, so this drops the
-#                   CSRF belt and keeps the braces.
+#   --strict-origin keep LoopPlane's same-origin check on
+#
+# By default this sets same_origin_required false in the workflow's
+# config/security.json, because with it on, every action button clicked through a
+# forwarded URL returns 403 "same-origin check failed". That check is CSRF
+# protection, not authentication: the dashboard token is still required, and an
+# off-origin POST without one is still refused. Pass --strict-origin to keep it.
 
 set -uo pipefail
 
@@ -30,7 +31,7 @@ PORT="${LOOPPLANE_PORT:-8765}"
 PUBLIC=0
 CLONE=1
 OPEN=1
-ALLOW_ORIGIN=0
+ALLOW_ORIGIN=1
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -39,7 +40,8 @@ while [ $# -gt 0 ]; do
     --public)  PUBLIC=1; shift ;;
     --no-clone) CLONE=0; shift ;;
     --no-open) OPEN=0; shift ;;
-    --allow-forwarded-origin) ALLOW_ORIGIN=1; shift ;;
+    --strict-origin) ALLOW_ORIGIN=0; shift ;;
+    --allow-forwarded-origin) shift ;;  # now the default; accepted so old copies of the command still run
     -h|--help) sed -n '2,26p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown flag: $1 (try --help)" >&2; exit 2 ;;
   esac
@@ -80,27 +82,47 @@ mkdir -p "$PROJECT/.loopplane"
 LOG="$PROJECT/.loopplane/dashboard.log"
 
 # LoopPlane only accepts POSTs whose origin is the host it bound to, so through a
-# forwarded URL every action button returns 403 "same-origin check failed". This
-# turns that check off. The token is still required for mutating calls, verified
+# forwarded URL every action button returns 403 "same-origin check failed". Turn
+# that check off by default. The token still gates mutating calls, verified
 # against v1.6.0: an off-origin POST without one is still a 401.
-if [ "$ALLOW_ORIGIN" = 1 ]; then
-  python3 - "$PROJECT" <<'PY' || { echo "Could not patch security.json" >&2; exit 1; }
+# --strict-origin restores the check rather than merely declining to turn it off,
+# so the flag still means something after a previous default run flipped the file.
+WANT_SAME_ORIGIN=$([ "$ALLOW_ORIGIN" = 1 ] && echo false || echo true)
+changed="$(python3 - "$PROJECT" "$WANT_SAME_ORIGIN" <<'PY'
 import glob, json, os, sys
-found = 0
-for path in glob.glob(os.path.join(sys.argv[1], ".loopplane/workflows/*/config/security.json")):
+project, want = sys.argv[1], sys.argv[2] == "true"
+for path in glob.glob(os.path.join(project, ".loopplane/workflows/*/config/security.json")):
     with open(path, encoding="utf-8") as fh:
         cfg = json.load(fh)
-    cfg.setdefault("dashboard", {})["same_origin_required"] = False
+    dash = cfg.setdefault("dashboard", {})
+    if bool(dash.get("same_origin_required", True)) is want:
+        continue                     # already correct, leave the file and the server alone
+    dash["same_origin_required"] = want
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(cfg, fh, indent=2, sort_keys=True)
         fh.write("\n")
-    print(f"same_origin_required false in {os.path.relpath(path, sys.argv[1])}")
-    found += 1
-if not found:
-    print("No workflow security.json found to patch.", file=sys.stderr)
+    print(os.path.relpath(path, project))
 PY
-  # The running server holds the old setting in memory, so it has to be replaced.
+)"
+
+if [ -n "$changed" ]; then
+  if [ "$ALLOW_ORIGIN" = 1 ]; then
+    echo "Same-origin check off (the dashboard token is still required) in:"
+  else
+    echo "Same-origin check restored in:"
+  fi
+  echo "$changed" | sed 's/^/  /'
+  # A server already running holds the old value in memory, so replace it. Its
+  # own stop relies on registry records, which go missing often enough that an
+  # orphan is left holding the port and serving the old config. Then this script
+  # starts a fresh server one port up and the setting looks like it did nothing,
+  # so sweep the orphans by command line too, scoped to this project.
   python3 "$LP/scripts/loopplane" dashboard stop --project "$PROJECT" >/dev/null 2>&1 || true
+  while read -r stale_pid; do
+    [ -n "$stale_pid" ] && kill "$stale_pid" 2>/dev/null
+  done < <(ps -eo pid=,args= 2>/dev/null | grep "loopplane dashboard" | grep -v grep \
+             | grep -F -- "$PROJECT" | awk '{print $1}')
+  sleep 0.5
 fi
 
 # Probe in a subshell: `exec` with no command in THIS shell would make the
@@ -230,12 +252,11 @@ fi
 if [ "$IN_CS" = 1 ]; then
   echo "If the tab does not load, open the PORTS panel next to TERMINAL and click the"
   echo "globe icon on the row for port $PORT. Forwarded ports are private by default."
-  echo
-  echo "Heads up: reading the dashboard works through the forwarded URL, but buttons that"
-  echo "act (approve, control) send a POST, and LoopPlane only accepts POSTs whose origin"
-  echo "is the bind host. Through a Codespaces URL those come back 403. Approve from the"
-  echo "terminal instead, or set same_origin_required false in the workflow's"
-  echo "config/security.json if you accept what that turns off."
+  if [ "$ALLOW_ORIGIN" = 0 ]; then
+    echo
+    echo "You passed --strict-origin, so action buttons clicked through this forwarded URL"
+    echo "will return 403 same-origin check failed. Reading works; approve from the terminal."
+  fi
 fi
 
 echo

@@ -66,13 +66,13 @@ scripts/open-dashboard.sh --project ~/my-study --port 8765 --public
 
 `--public` matters because a forwarded Codespaces port is **private by default**, so anyone else clicking your link gets a login wall rather than your dashboard. Think before you use it: that link carries the token, so anyone with it can read your run.
 
-**If a button gives you `same-origin check failed`,** that is the one snag in this whole setup. Through a forwarded URL you can *read* the dashboard fine, but the buttons that *act* send a POST, and LoopPlane only accepts POSTs whose origin is the host it bound to, so they come back 403. One flag turns that check off and restarts the server:
+**The script already handles the one snag here, so you should not see it.** Through a forwarded URL you can read the dashboard fine, but the buttons that *act* send a POST, and LoopPlane only accepts POSTs whose origin is the host it bound to, so out of the box they come back 403 `same-origin check failed`. The script turns that check off for you and restarts the server.
+
+**What that costs, stated plainly:** the check is CSRF protection, so with it off any page in your browser could aim a POST at your dashboard. It would still need the token, which is the real gate and stays on. I checked both directions: an off-origin POST carrying the token is accepted, one without it is still refused. If you would rather keep the check and approve from the terminal:
 
 ```bash
-scripts/open-dashboard.sh --allow-forwarded-origin
+scripts/open-dashboard.sh --strict-origin
 ```
-
-**What you are giving up, stated plainly:** that check is CSRF protection, so switching it off means any page in your browser could aim a POST at your dashboard. It would still need the token, which is the actual gate and stays on. I checked: with the flag set, an off-origin POST carrying the token is accepted and one without it is still refused. On your own laptop none of this arises, so do not set the flag there.
 
 ---
 
